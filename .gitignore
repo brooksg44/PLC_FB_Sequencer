@@ -1,1 +1,6 @@
 .~*
+
+# Homework machine examples (built from the CODESYS claude-*.xml solutions)
+examples/*_StateMachine.fods
+examples/PRG_*.st
+examples/FB_*Seq.st
