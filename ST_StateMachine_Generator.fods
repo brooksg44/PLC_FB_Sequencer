@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <office:document xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" office:version="1.4" office:mimetype="application/vnd.oasis.opendocument.spreadsheet">
- <office:meta><dc:date>2025-11-29T17:01:41.349951000</dc:date><meta:editing-duration>PT2H18M25S</meta:editing-duration><meta:editing-cycles>6</meta:editing-cycles><meta:generator>LibreOffice/25.8.3.2$MacOSX_AARCH64 LibreOffice_project/8ca8d55c161d602844f5428fa4b58097424e324e</meta:generator><meta:document-statistic meta:table-count="6" meta:cell-count="208" meta:object-count="0"/></office:meta>
+ <office:meta><dc:date>2026-07-10T01:42:24.646716000</dc:date><meta:editing-duration>PT2H38M33S</meta:editing-duration><meta:editing-cycles>7</meta:editing-cycles><meta:generator>LibreOffice/26.2.3.2$MacOSX_AARCH64 LibreOffice_project/70e089b17412e4cb7773e41413306b17a2328c34</meta:generator><meta:document-statistic meta:table-count="6" meta:cell-count="212" meta:object-count="0"/></office:meta>
  <office:settings>
   <config:config-item-set config:name="ooo:view-settings">
    <config:config-item config:name="VisibleAreaTop" config:type="int">0</config:config-item>
    <config:config-item config:name="VisibleAreaLeft" config:type="int">0</config:config-item>
    <config:config-item config:name="VisibleAreaWidth" config:type="int">5061</config:config-item>
-   <config:config-item config:name="VisibleAreaHeight" config:type="int">2709</config:config-item>
+   <config:config-item config:name="VisibleAreaHeight" config:type="int">3612</config:config-item>
    <config:config-item-map-indexed config:name="Views">
     <config:config-item-map-entry>
      <config:config-item config:name="ViewId" config:type="string">view1</config:config-item>
@@ -122,7 +122,7 @@
       </config:config-item-map-entry>
      </config:config-item-map-named>
      <config:config-item config:name="ActiveTable" config:type="string">Config</config:config-item>
-     <config:config-item config:name="HorizontalScrollbarWidth" config:type="int">1408</config:config-item>
+     <config:config-item config:name="HorizontalScrollbarWidth" config:type="int">1145</config:config-item>
      <config:config-item config:name="ZoomType" config:type="short">0</config:config-item>
      <config:config-item config:name="ZoomValue" config:type="int">100</config:config-item>
      <config:config-item config:name="PageViewZoomValue" config:type="int">60</config:config-item>
@@ -146,6 +146,7 @@
      <config:config-item config:name="RasterSubdivisionY" config:type="int">1</config:config-item>
      <config:config-item config:name="IsRasterAxisSynchronized" config:type="boolean">true</config:config-item>
      <config:config-item config:name="FormulaBarHeight" config:type="short">1</config:config-item>
+     <config:config-item config:name="WindowState" config:type="string">151,122,1209,714;1;,,,;</config:config-item>
      <config:config-item config:name="AnchoredTextOverflowLegacy" config:type="boolean">false</config:config-item>
      <config:config-item config:name="LegacySingleLineFontwork" config:type="boolean">false</config:config-item>
      <config:config-item config:name="ConnectorUseSnapRect" config:type="boolean">false</config:config-item>
@@ -219,453 +220,70 @@
   <office:script script:language="ooo:Basic">
    <ooo:libraries xmlns:ooo="http://openoffice.org/2004/office" xmlns:xlink="http://www.w3.org/1999/xlink">
     <ooo:library-embedded ooo:name="Standard">
+     <ooo:module ooo:name="Module2">
+      <ooo:source-code>REM  *****  BASIC  *****
+
+
+      </ooo:source-code>
+     </ooo:module>
      <ooo:module ooo:name="Module1">
       <ooo:source-code>REM ***** BASIC *****
 REM State Machine Generator for IEC 61131-3 Structured Text
-REM This module converts state machine definitions in spreadsheet to ST Function Block code
+REM Converts the state machine definition in this spreadsheet into an ST Function Block.
+REM
+REM Entry points:
+REM   PreviewStateMachine  - validate, then preview the generated code in a dialog
+REM   GenerateStateMachine - validate, then export the generated code to a .st file
+REM
+REM Config sheet options (label in column A, value in column B; rows may be in any order):
+REM   Program Name          - Function Block name (required)
+REM   Author                - metadata comment (optional)
+REM   Version               - metadata comment (optional)
+REM   State Variable Name   - internal state variable name (required)
+REM   Initial State         - starting state, must exist in the States sheet (required)
+REM   State Enum Type Name  - if set, states are declared as a named TYPE before the
+REM                           Function Block (portable to CODESYS/TwinCAT); if blank,
+REM                           an inline enumeration is used
+REM   State Output Variable - if set, an INT output with this name reports the current
+REM                           state number (row order in the States sheet) for
+REM                           HMI/diagnostics
 
 Option Explicit
 
+&apos; Globals used by the preview dialog&apos;s Save button listener
+Global GlobalCodeToSave As String
+Global GlobalDoc As Object
+
+&apos; ================= Entry points =================
+
 Sub GenerateStateMachine()
-    &apos; Main entry point - generates complete ST code
+    &apos; Validate the spreadsheet, generate ST code, and export to a .st file
     Dim sCode As String
-    Dim oSheet As Object
-    Dim oDoc As Object
-    
-    oDoc = ThisComponent
-    
-    &apos; Generate all sections
-    sCode = GenerateFunctionBlockHeader(oDoc)
-    sCode = sCode &amp; GenerateVarDeclarations(oDoc)
-    sCode = sCode &amp; GenerateStateMachineLogic(oDoc)
-    sCode = sCode &amp; GenerateFunctionBlockFooter()
-    
-    &apos; Display or save the result
-    ExportToFile(sCode, oDoc)
-    
+
+    sCode = BuildValidatedCode(ThisComponent)
+    If Len(sCode) = 0 Then Exit Sub
+
+    ExportToFile(sCode, ThisComponent)
 End Sub
-
-Function GenerateFunctionBlockHeader(oDoc As Object) As String
-    &apos; Generate FUNCTION_BLOCK declaration and metadata comments
-    Dim oSheet As Object
-    Dim sName As String
-    Dim sAuthor As String
-    Dim sVersion As String
-    Dim sCode As String
-    
-    oSheet = oDoc.Sheets.getByName(&quot;Config&quot;)
-    sName = GetCellValue(oSheet, 1, 0)      &apos; B1 - Program Name
-    sAuthor = GetCellValue(oSheet, 1, 1)    &apos; B2 - Author
-    sVersion = GetCellValue(oSheet, 1, 2)   &apos; B3 - Version
-    
-    sCode = &quot;(* ======================================== *)&quot; &amp; Chr(10)
-    sCode = sCode &amp; &quot;(* State Machine: &quot; &amp; sName &amp; &quot; *)&quot; &amp; Chr(10)
-    If Len(sAuthor) &gt; 0 Then
-        sCode = sCode &amp; &quot;(* Author: &quot; &amp; sAuthor &amp; &quot; *)&quot; &amp; Chr(10)
-    End If
-    sCode = sCode &amp; &quot;(* Version: &quot; &amp; sVersion &amp; &quot; *)&quot; &amp; Chr(10)
-    sCode = sCode &amp; &quot;(* Generated: &quot; &amp; Format(Now(), &quot;YYYY-MM-DD HH:MM:SS&quot;) &amp; &quot; *)&quot; &amp; Chr(10)
-    sCode = sCode &amp; &quot;(* ======================================== *)&quot; &amp; Chr(10)
-    sCode = sCode &amp; Chr(10)
-    sCode = sCode &amp; &quot;FUNCTION_BLOCK &quot; &amp; sName &amp; Chr(10)
-    
-    GenerateFunctionBlockHeader = sCode
-End Function
-
-Function GenerateVarDeclarations(oDoc As Object) As String
-    &apos; Generate VAR_INPUT, VAR_OUTPUT, and VAR sections
-    Dim sCode As String
-    
-    sCode = Chr(10)
-    sCode = sCode &amp; GenerateInputVars(oDoc)
-    sCode = sCode &amp; Chr(10)
-    sCode = sCode &amp; GenerateOutputVars(oDoc)
-    sCode = sCode &amp; Chr(10)
-    sCode = sCode &amp; GenerateInternalVars(oDoc)
-    
-    GenerateVarDeclarations = sCode
-End Function
-
-Function GenerateInputVars(oDoc As Object) As String
-    &apos; Generate VAR_INPUT section
-    Dim oSheet As Object
-    Dim sCode As String
-    Dim iRow As Integer
-    Dim sVarName As String
-    Dim sDescription As String
-    
-    oSheet = oDoc.Sheets.getByName(&quot;Inputs&quot;)
-    sCode = &quot;VAR_INPUT&quot; &amp; Chr(10)
-    
-    &apos; Start from row 2 (row index 1) - skip header
-    iRow = 1
-    Do While True
-        sVarName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
-        If Len(sVarName) = 0 Then Exit Do
-        
-        sDescription = GetCellValue(oSheet, 2, iRow)  &apos; Column C
-        
-        If Len(sDescription) &gt; 0 Then
-            sCode = sCode &amp; &quot;    &quot; &amp; sVarName &amp; &quot; : BOOL;  (* &quot; &amp; sDescription &amp; &quot; *)&quot; &amp; Chr(10)
-        Else
-            sCode = sCode &amp; &quot;    &quot; &amp; sVarName &amp; &quot; : BOOL;&quot; &amp; Chr(10)
-        End If
-        
-        iRow = iRow + 1
-    Loop
-    
-    sCode = sCode &amp; &quot;END_VAR&quot; &amp; Chr(10)
-    
-    GenerateInputVars = sCode
-End Function
-
-Function GenerateOutputVars(oDoc As Object) As String
-    &apos; Generate VAR_OUTPUT section
-    Dim oSheet As Object
-    Dim sCode As String
-    Dim iRow As Integer
-    Dim sVarName As String
-    Dim sDescription As String
-    
-    oSheet = oDoc.Sheets.getByName(&quot;Outputs&quot;)
-    sCode = &quot;VAR_OUTPUT&quot; &amp; Chr(10)
-    
-    &apos; Start from row 2 (row index 1) - skip header
-    iRow = 1
-    Do While True
-        sVarName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
-        If Len(sVarName) = 0 Then Exit Do
-        
-        sDescription = GetCellValue(oSheet, 2, iRow)  &apos; Column C
-        
-        If Len(sDescription) &gt; 0 Then
-            sCode = sCode &amp; &quot;    &quot; &amp; sVarName &amp; &quot; : BOOL;  (* &quot; &amp; sDescription &amp; &quot; *)&quot; &amp; Chr(10)
-        Else
-            sCode = sCode &amp; &quot;    &quot; &amp; sVarName &amp; &quot; : BOOL;&quot; &amp; Chr(10)
-        End If
-        
-        iRow = iRow + 1
-    Loop
-    
-    sCode = sCode &amp; &quot;END_VAR&quot; &amp; Chr(10)
-    
-    GenerateOutputVars = sCode
-End Function
-
-Function GenerateInternalVars(oDoc As Object) As String
-    &apos; Generate VAR section with state enumeration and state variable
-    Dim oSheet As Object
-    Dim sCode As String
-    Dim sStateVarName As String
-    Dim sInitialState As String
-    
-    oSheet = oDoc.Sheets.getByName(&quot;Config&quot;)
-    sStateVarName = GetCellValue(oSheet, 1, 4)  &apos; B5 - State Variable Name
-    sInitialState = GetCellValue(oSheet, 1, 5)  &apos; B6 - Initial State
-    
-    sCode = &quot;VAR&quot; &amp; Chr(10)
-    sCode = sCode &amp; &quot;    &quot; &amp; sStateVarName &amp; &quot; : &quot; &amp; GenerateStateEnum(oDoc) &amp; &quot; := &quot; &amp; sInitialState &amp; &quot;;&quot; &amp; Chr(10)
-    sCode = sCode &amp; &quot;END_VAR&quot; &amp; Chr(10)
-    
-    GenerateInternalVars = sCode
-End Function
-
-Function GenerateStateEnum(oDoc As Object) As String
-    &apos; Generate state enumeration type inline
-    Dim oSheet As Object
-    Dim sCode As String
-    Dim iRow As Integer
-    Dim sStateName As String
-    Dim bFirst As Boolean
-    
-    oSheet = oDoc.Sheets.getByName(&quot;States&quot;)
-    sCode = &quot;(&quot;
-    bFirst = True
-    
-    &apos; Start from row 2 (row index 1) - skip header
-    iRow = 1
-    Do While True
-        sStateName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
-        If Len(sStateName) = 0 Then Exit Do
-        
-        If Not bFirst Then
-            sCode = sCode &amp; &quot;, &quot;
-        End If
-        sCode = sCode &amp; sStateName
-        bFirst = False
-        
-        iRow = iRow + 1
-    Loop
-    
-    sCode = sCode &amp; &quot;)&quot;
-    
-    GenerateStateEnum = sCode
-End Function
-
-Function GenerateStateMachineLogic(oDoc As Object) As String
-    &apos; Generate main state machine CASE statement
-    Dim oSheet As Object
-    Dim sCode As String
-    Dim sStateVarName As String
-    
-    oSheet = oDoc.Sheets.getByName(&quot;Config&quot;)
-    sStateVarName = GetCellValue(oSheet, 1, 4)  &apos; B5 - State Variable Name
-    
-    sCode = Chr(10)
-    sCode = sCode &amp; &quot;(* State Machine Logic *)&quot; &amp; Chr(10)
-    sCode = sCode &amp; &quot;CASE &quot; &amp; sStateVarName &amp; &quot; OF&quot; &amp; Chr(10)
-    sCode = sCode &amp; GenerateStateCases(oDoc)
-    sCode = sCode &amp; &quot;END_CASE;&quot; &amp; Chr(10)
-    
-    GenerateStateMachineLogic = sCode
-End Function
-
-Function GenerateStateCases(oDoc As Object) As String
-    &apos; Generate each state case with actions and transitions
-    Dim oStatesSheet As Object
-    Dim sCode As String
-    Dim iRow As Integer
-    Dim sStateName As String
-    
-    oStatesSheet = oDoc.Sheets.getByName(&quot;States&quot;)
-    sCode = &quot;&quot;
-    
-    &apos; Start from row 2 (row index 1) - skip header
-    iRow = 1
-    Do While True
-        sStateName = GetCellValue(oStatesSheet, 1, iRow)  &apos; Column B
-        If Len(sStateName) = 0 Then Exit Do
-        
-        sCode = sCode &amp; Chr(10)
-        sCode = sCode &amp; &quot;    &quot; &amp; sStateName &amp; &quot;:&quot; &amp; Chr(10)
-        sCode = sCode &amp; GenerateStateActions(oDoc, sStateName)
-        sCode = sCode &amp; GenerateStateTransitions(oDoc, sStateName)
-        
-        iRow = iRow + 1
-    Loop
-    
-    GenerateStateCases = sCode
-End Function
-
-Function GenerateStateActions(oDoc As Object, sStateName As String) As String
-    &apos; Generate output assignments for a specific state
-    Dim oActionsSheet As Object
-    Dim oOutputsSheet As Object
-    Dim sCode As String
-    Dim iStateRow As Integer
-    Dim iOutputCol As Integer
-    Dim sOutputName As String
-    Dim iValue As Integer
-    
-    oActionsSheet = oDoc.Sheets.getByName(&quot;StateActions&quot;)
-    oOutputsSheet = oDoc.Sheets.getByName(&quot;Outputs&quot;)
-    
-    &apos; Find the state row in StateActions sheet
-    iStateRow = FindStateRow(oActionsSheet, sStateName)
-    If iStateRow = -1 Then
-        GenerateStateActions = &quot;&quot;
-        Exit Function
-    End If
-    
-    sCode = &quot;        (* Actions *)&quot; &amp; Chr(10)
-    
-    &apos; Iterate through output columns (columns B to Q, indices 1 to 16)
-    For iOutputCol = 1 To 16
-        sOutputName = GetCellValue(oOutputsSheet, 1, iOutputCol)  &apos; Get output name from Outputs sheet
-        If Len(sOutputName) = 0 Then Exit For
-        
-        iValue = Val(GetCellValue(oActionsSheet, iOutputCol, iStateRow))
-        
-        If iValue = 1 Then
-            sCode = sCode &amp; &quot;        &quot; &amp; sOutputName &amp; &quot; := TRUE;&quot; &amp; Chr(10)
-        Else
-            sCode = sCode &amp; &quot;        &quot; &amp; sOutputName &amp; &quot; := FALSE;&quot; &amp; Chr(10)
-        End If
-    Next iOutputCol
-    
-    sCode = sCode &amp; Chr(10)
-    
-    GenerateStateActions = sCode
-End Function
-
-Function FindStateRow(oSheet As Object, sStateName As String) As Integer
-    &apos; Find row index for a given state name in StateActions sheet
-    Dim iRow As Integer
-    Dim sCellValue As String
-    
-    iRow = 1  &apos; Start from row 2 (index 1) - skip header
-    Do While True
-        sCellValue = GetCellValue(oSheet, 0, iRow)  &apos; Column A
-        If Len(sCellValue) = 0 Then
-            FindStateRow = -1
-            Exit Function
-        End If
-        
-        If sCellValue = sStateName Then
-            FindStateRow = iRow
-            Exit Function
-        End If
-        
-        iRow = iRow + 1
-    Loop
-End Function
-
-Function GenerateStateTransitions(oDoc As Object, sFromState As String) As String
-    &apos; Generate IF-ELSIF chain for state transitions
-    Dim oSheet As Object
-    Dim sCode As String
-    Dim iRow As Integer
-    Dim sFrom As String
-    Dim sTo As String
-    Dim sCondition As String
-    Dim sComment As String
-    Dim bFirst As Boolean
-    Dim oConfigSheet As Object
-    Dim sStateVarName As String
-    
-    oSheet = oDoc.Sheets.getByName(&quot;Transitions&quot;)
-    oConfigSheet = oDoc.Sheets.getByName(&quot;Config&quot;)
-    sStateVarName = GetCellValue(oConfigSheet, 1, 4)  &apos; B5
-    
-    sCode = &quot;        (* Transitions *)&quot; &amp; Chr(10)
-    bFirst = True
-    
-    &apos; Start from row 2 (row index 1) - skip header
-    iRow = 1
-    Do While True
-        sFrom = GetCellValue(oSheet, 0, iRow)  &apos; Column A
-        If Len(sFrom) = 0 Then Exit Do
-        
-        If sFrom = sFromState Then
-            sTo = GetCellValue(oSheet, 1, iRow)       &apos; Column B
-            sCondition = GetCellValue(oSheet, 2, iRow) &apos; Column C
-            sComment = GetCellValue(oSheet, 3, iRow)   &apos; Column D
-            
-            If bFirst Then
-                sCode = sCode &amp; &quot;        IF &quot;
-                bFirst = False
-            Else
-                sCode = sCode &amp; &quot;        ELSIF &quot;
-            End If
-            
-            sCode = sCode &amp; sCondition &amp; &quot; THEN&quot;
-            If Len(sComment) &gt; 0 Then
-                sCode = sCode &amp; &quot;  (* &quot; &amp; sComment &amp; &quot; *)&quot;
-            End If
-            sCode = sCode &amp; Chr(10)
-            sCode = sCode &amp; &quot;            &quot; &amp; sStateVarName &amp; &quot; := &quot; &amp; sTo &amp; &quot;;&quot; &amp; Chr(10)
-        End If
-        
-        iRow = iRow + 1
-    Loop
-    
-    If Not bFirst Then
-        sCode = sCode &amp; &quot;        END_IF;&quot; &amp; Chr(10)
-    Else
-        sCode = sCode &amp; &quot;        (* No transitions *)&quot; &amp; Chr(10)
-    End If
-    
-    GenerateStateTransitions = sCode
-End Function
-
-Function GenerateFunctionBlockFooter() As String
-    &apos; Generate FUNCTION_BLOCK closing
-    GenerateFunctionBlockFooter = Chr(10) &amp; &quot;END_FUNCTION_BLOCK&quot; &amp; Chr(10)
-End Function
-
-Function GetCellValue(oSheet As Object, iCol As Integer, iRow As Integer) As String
-    &apos; Get cell value as string (0-indexed)
-    Dim oCell As Object
-    Dim sValue As String
-    
-    On Error Resume Next
-    oCell = oSheet.getCellByPosition(iCol, iRow)
-    sValue = Trim(oCell.getString())
-    
-    GetCellValue = sValue
-End Function
-
-Sub ExportToFile(sCode As String, oDoc As Object)
-    &apos; Export generated code to a file
-    Dim oSheet As Object
-    Dim sFileName As String
-    Dim sFilePath As String
-    Dim oFilePicker As Object
-    Dim oSimpleFileAccess As Object
-    Dim oTextOutputStream As Object
-    Dim oOutputStream As Object
-    
-    oSheet = oDoc.Sheets.getByName(&quot;Config&quot;)
-    sFileName = GetCellValue(oSheet, 1, 1) &amp; &quot;.st&quot;
-    
-    &apos; Create file picker dialog
-    oFilePicker = CreateUnoService(&quot;com.sun.star.ui.dialogs.FilePicker&quot;)
-    oFilePicker.Initialize(Array(com.sun.star.ui.dialogs.TemplateDescription.FILESAVE_SIMPLE))
-    oFilePicker.setDefaultName(sFileName)
-    oFilePicker.appendFilter(&quot;Structured Text&quot;, &quot;*.st&quot;)
-    oFilePicker.appendFilter(&quot;All Files&quot;, &quot;*.*&quot;)
-    oFilePicker.setCurrentFilter(&quot;Structured Text&quot;)
-    
-    If oFilePicker.Execute() = com.sun.star.ui.dialogs.ExecutableDialogResults.OK Then
-        sFilePath = oFilePicker.Files(0)
-        
-        &apos; Write to file using UNO services (cross-platform compatible)
-        On Error GoTo ErrorHandler
-        oSimpleFileAccess = CreateUnoService(&quot;com.sun.star.ucb.SimpleFileAccess&quot;)
-        
-        &apos; Delete file if it exists
-        If oSimpleFileAccess.exists(sFilePath) Then
-            oSimpleFileAccess.kill(sFilePath)
-        End If
-        
-        &apos; Create output stream
-        oOutputStream = oSimpleFileAccess.openFileWrite(sFilePath)
-        oTextOutputStream = CreateUnoService(&quot;com.sun.star.io.TextOutputStream&quot;)
-        oTextOutputStream.setOutputStream(oOutputStream)
-        oTextOutputStream.setEncoding(&quot;UTF-8&quot;)
-        
-        &apos; Write the code
-        oTextOutputStream.writeString(sCode)
-        
-        &apos; Close streams
-        oTextOutputStream.closeOutput()
-        oOutputStream.closeOutput()
-        
-        MsgBox &quot;State machine code generated successfully!&quot; &amp; Chr(10) &amp; Chr(10) &amp; _
-               &quot;File: &quot; &amp; ConvertFromUrl(sFilePath), 64, &quot;Success&quot;
-        Exit Sub
-        
-ErrorHandler:
-        MsgBox &quot;Error writing file: &quot; &amp; Error$ &amp; Chr(10) &amp; Chr(10) &amp; _
-               &quot;Path: &quot; &amp; sFilePath, 16, &quot;Error&quot;
-    End If
-End Sub
-
 
 Sub PreviewStateMachine()
-    &apos; Preview generated code in a scrollable dialog
+    &apos; Validate the spreadsheet and preview the generated code in a scrollable dialog
     Dim sCode As String
-    Dim oDoc As Object
     Dim oDialogModel As Object
     Dim oDialog As Object
     Dim oTextModel As Object
     Dim oButtonModel As Object
     Dim oSaveButtonModel As Object
-    
-    oDoc = ThisComponent
-    
-    &apos; Generate code
-    sCode = GenerateFunctionBlockHeader(oDoc)
-    sCode = sCode &amp; GenerateVarDeclarations(oDoc)
-    sCode = sCode &amp; GenerateStateMachineLogic(oDoc)
-    sCode = sCode &amp; GenerateFunctionBlockFooter()
-    
+
+    sCode = BuildValidatedCode(ThisComponent)
+    If Len(sCode) = 0 Then Exit Sub
+
     &apos; Create dialog
     oDialogModel = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialogModel&quot;)
     oDialogModel.Width = 300
     oDialogModel.Height = 250
     oDialogModel.Title = &quot;State Machine Preview&quot;
-    
+
     &apos; Create scrollable text field
     oTextModel = oDialogModel.createInstance(&quot;com.sun.star.awt.UnoControlEditModel&quot;)
     oTextModel.PositionX = 5
@@ -680,7 +298,7 @@ Sub PreviewStateMachine()
     oTextModel.FontName = &quot;Courier New&quot;
     oTextModel.FontHeight = 10
     oDialogModel.insertByName(&quot;TextField&quot;, oTextModel)
-    
+
     &apos; Create Save button
     oSaveButtonModel = oDialogModel.createInstance(&quot;com.sun.star.awt.UnoControlButtonModel&quot;)
     oSaveButtonModel.PositionX = 80
@@ -690,7 +308,7 @@ Sub PreviewStateMachine()
     oSaveButtonModel.Label = &quot;Save to File&quot;
     oSaveButtonModel.PushButtonType = 0  &apos; Standard button
     oDialogModel.insertByName(&quot;SaveButton&quot;, oSaveButtonModel)
-    
+
     &apos; Create Close button
     oButtonModel = oDialogModel.createInstance(&quot;com.sun.star.awt.UnoControlButtonModel&quot;)
     oButtonModel.PositionX = 160
@@ -700,29 +318,24 @@ Sub PreviewStateMachine()
     oButtonModel.Label = &quot;Close&quot;
     oButtonModel.PushButtonType = 2  &apos; OK button
     oDialogModel.insertByName(&quot;CloseButton&quot;, oButtonModel)
-    
+
     &apos; Create and execute dialog
     oDialog = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialog&quot;)
     oDialog.setModel(oDialogModel)
     oDialog.setVisible(True)
-    
+
     &apos; Add action listener for Save button
     Dim oSaveButton As Object
-    oSaveButton = oDialog.getControl(&quot;SaveButton&quot;)
     Dim oActionListener As Object
+    oSaveButton = oDialog.getControl(&quot;SaveButton&quot;)
     oActionListener = CreateUnoListener(&quot;SaveButton_&quot;, &quot;com.sun.star.awt.XActionListener&quot;)
     GlobalCodeToSave = sCode  &apos; Store code globally for save action
-    GlobalDoc = oDoc
+    GlobalDoc = ThisComponent
     oSaveButton.addActionListener(oActionListener)
-    
+
     oDialog.execute()
     oDialog.dispose()
-    
 End Sub
-
-&apos; Global variables for save action
-Global GlobalCodeToSave As String
-Global GlobalDoc As Object
 
 Sub SaveButton_actionPerformed(oEvent As Object)
     &apos; Save button action handler
@@ -733,6 +346,800 @@ Sub SaveButton_disposing(oEvent As Object)
     &apos; Disposing handler (required for listener)
 End Sub
 
+&apos; ================= Code assembly =================
+
+Function BuildValidatedCode(oDoc As Object) As String
+    &apos; Validate the spreadsheet; on success return the generated code.
+    &apos; Returns &quot;&quot; if errors were found or the user cancelled after warnings.
+    Dim sErrors As String
+    Dim sWarnings As String
+
+    Call ValidateStateMachine(oDoc, sErrors, sWarnings)
+
+    If Len(sErrors) &gt; 0 Then
+        MsgBox &quot;Cannot generate code. Fix these problems first:&quot; &amp; NL() &amp; NL() &amp; sErrors, 16, &quot;Validation Errors&quot;
+        BuildValidatedCode = &quot;&quot;
+        Exit Function
+    End If
+
+    If Len(sWarnings) &gt; 0 Then
+        If MsgBox(&quot;Warnings:&quot; &amp; NL() &amp; NL() &amp; sWarnings &amp; NL() &amp; NL() &amp; &quot;Generate code anyway?&quot;, 4 + 48, &quot;Validation Warnings&quot;) &lt;&gt; 6 Then
+            BuildValidatedCode = &quot;&quot;
+            Exit Function
+        End If
+    End If
+
+    BuildValidatedCode = BuildStateMachineCode(oDoc)
+End Function
+
+Function BuildStateMachineCode(oDoc As Object) As String
+    &apos; Assemble the complete Function Block source
+    Dim sCode As String
+
+    sCode = GenerateFunctionBlockHeader(oDoc)
+    sCode = sCode &amp; GenerateEnumTypeBlock(oDoc)
+    sCode = sCode &amp; &quot;FUNCTION_BLOCK &quot; &amp; GetConfigValue(oDoc, &quot;Program Name&quot;) &amp; NL()
+    sCode = sCode &amp; GenerateVarDeclarations(oDoc)
+    sCode = sCode &amp; GenerateStateMachineLogic(oDoc)
+    sCode = sCode &amp; NL() &amp; &quot;END_FUNCTION_BLOCK&quot; &amp; NL()
+
+    BuildStateMachineCode = sCode
+End Function
+
+Function GenerateFunctionBlockHeader(oDoc As Object) As String
+    &apos; Generate metadata comment banner
+    Dim sName As String
+    Dim sAuthor As String
+    Dim sVersion As String
+    Dim sCode As String
+
+    sName = GetConfigValue(oDoc, &quot;Program Name&quot;)
+    sAuthor = GetConfigValue(oDoc, &quot;Author&quot;)
+    sVersion = GetConfigValue(oDoc, &quot;Version&quot;)
+
+    sCode = &quot;(* ======================================== *)&quot; &amp; NL()
+    sCode = sCode &amp; &quot;(* State Machine: &quot; &amp; sName &amp; &quot; *)&quot; &amp; NL()
+    If Len(sAuthor) &gt; 0 Then
+        sCode = sCode &amp; &quot;(* Author: &quot; &amp; sAuthor &amp; &quot; *)&quot; &amp; NL()
+    End If
+    If Len(sVersion) &gt; 0 Then
+        sCode = sCode &amp; &quot;(* Version: &quot; &amp; sVersion &amp; &quot; *)&quot; &amp; NL()
+    End If
+    sCode = sCode &amp; &quot;(* Generated: &quot; &amp; Format(Now(), &quot;YYYY-MM-DD HH:MM:SS&quot;) &amp; &quot; *)&quot; &amp; NL()
+    sCode = sCode &amp; &quot;(* ======================================== *)&quot; &amp; NL()
+    sCode = sCode &amp; NL()
+
+    GenerateFunctionBlockHeader = sCode
+End Function
+
+Function GenerateEnumTypeBlock(oDoc As Object) As String
+    &apos; Generate a named TYPE declaration for the states, if configured.
+    &apos; Returns &quot;&quot; when &apos;State Enum Type Name&apos; is blank (inline enum is used instead).
+    Dim oSheet As Object
+    Dim sTypeName As String
+    Dim sCode As String
+    Dim iRow As Integer
+    Dim sStateName As String
+    Dim sDescription As String
+    Dim sNextState As String
+
+    sTypeName = GetConfigValue(oDoc, &quot;State Enum Type Name&quot;)
+    If Len(sTypeName) = 0 Then
+        GenerateEnumTypeBlock = &quot;&quot;
+        Exit Function
+    End If
+
+    oSheet = oDoc.Sheets.getByName(&quot;States&quot;)
+    sCode = &quot;TYPE &quot; &amp; sTypeName &amp; &quot; :&quot; &amp; NL()
+    sCode = sCode &amp; &quot;(&quot; &amp; NL()
+
+    iRow = 1
+    Do While True
+        sStateName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sStateName) = 0 Then Exit Do
+
+        sDescription = GetCellValue(oSheet, 2, iRow)  &apos; Column C
+        sNextState = GetCellValue(oSheet, 1, iRow + 1)
+
+        sCode = sCode &amp; &quot;    &quot; &amp; sStateName
+        If Len(sNextState) &gt; 0 Then
+            sCode = sCode &amp; &quot;,&quot;
+        End If
+        If Len(sDescription) &gt; 0 Then
+            sCode = sCode &amp; &quot;  (* &quot; &amp; sDescription &amp; &quot; *)&quot;
+        End If
+        sCode = sCode &amp; NL()
+
+        iRow = iRow + 1
+    Loop
+
+    sCode = sCode &amp; &quot;);&quot; &amp; NL()
+    sCode = sCode &amp; &quot;END_TYPE&quot; &amp; NL()
+    sCode = sCode &amp; NL()
+
+    GenerateEnumTypeBlock = sCode
+End Function
+
+Function GenerateVarDeclarations(oDoc As Object) As String
+    &apos; Generate VAR_INPUT, VAR_OUTPUT, and VAR sections
+    Dim sCode As String
+    Dim sStateOut As String
+    Dim sStateOutDecl As String
+
+    sStateOut = GetConfigValue(oDoc, &quot;State Output Variable&quot;)
+    sStateOutDecl = &quot;&quot;
+    If Len(sStateOut) &gt; 0 Then
+        sStateOutDecl = &quot;    &quot; &amp; sStateOut &amp; &quot; : INT;  (* Current state number (row order in States sheet) *)&quot; &amp; NL()
+    End If
+
+    sCode = NL()
+    sCode = sCode &amp; GenerateIOVars(oDoc, &quot;Inputs&quot;, &quot;VAR_INPUT&quot;, &quot;&quot;)
+    sCode = sCode &amp; NL()
+    sCode = sCode &amp; GenerateIOVars(oDoc, &quot;Outputs&quot;, &quot;VAR_OUTPUT&quot;, sStateOutDecl)
+    sCode = sCode &amp; NL()
+    sCode = sCode &amp; GenerateInternalVars(oDoc)
+
+    GenerateVarDeclarations = sCode
+End Function
+
+Function GenerateIOVars(oDoc As Object, sSheetName As String, sSection As String, sExtraDecl As String) As String
+    &apos; Generate a VAR_INPUT or VAR_OUTPUT section from an I/O sheet
+    Dim oSheet As Object
+    Dim sCode As String
+    Dim iRow As Integer
+    Dim sVarName As String
+    Dim sDescription As String
+
+    oSheet = oDoc.Sheets.getByName(sSheetName)
+    sCode = sSection &amp; NL()
+
+    &apos; Start from row 2 (row index 1) - skip header
+    iRow = 1
+    Do While True
+        sVarName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sVarName) = 0 Then Exit Do
+
+        sDescription = GetCellValue(oSheet, 2, iRow)  &apos; Column C
+
+        If Len(sDescription) &gt; 0 Then
+            sCode = sCode &amp; &quot;    &quot; &amp; sVarName &amp; &quot; : BOOL;  (* &quot; &amp; sDescription &amp; &quot; *)&quot; &amp; NL()
+        Else
+            sCode = sCode &amp; &quot;    &quot; &amp; sVarName &amp; &quot; : BOOL;&quot; &amp; NL()
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    sCode = sCode &amp; sExtraDecl
+    sCode = sCode &amp; &quot;END_VAR&quot; &amp; NL()
+
+    GenerateIOVars = sCode
+End Function
+
+Function GenerateInternalVars(oDoc As Object) As String
+    &apos; Generate VAR section with the state variable
+    Dim sCode As String
+    Dim sStateVarName As String
+    Dim sInitialState As String
+    Dim sEnumType As String
+    Dim sTypeText As String
+
+    sStateVarName = GetConfigValue(oDoc, &quot;State Variable Name&quot;)
+    sInitialState = GetConfigValue(oDoc, &quot;Initial State&quot;)
+    sEnumType = GetConfigValue(oDoc, &quot;State Enum Type Name&quot;)
+
+    If Len(sEnumType) &gt; 0 Then
+        sTypeText = sEnumType
+    Else
+        sTypeText = GenerateStateEnum(oDoc)
+    End If
+
+    sCode = &quot;VAR&quot; &amp; NL()
+    sCode = sCode &amp; &quot;    &quot; &amp; sStateVarName &amp; &quot; : &quot; &amp; sTypeText &amp; &quot; := &quot; &amp; sInitialState &amp; &quot;;&quot; &amp; NL()
+    sCode = sCode &amp; &quot;END_VAR&quot; &amp; NL()
+
+    GenerateInternalVars = sCode
+End Function
+
+Function GenerateStateEnum(oDoc As Object) As String
+    &apos; Generate the inline state enumeration, e.g. (IDLE, RUNNING, ERROR)
+    Dim oSheet As Object
+    Dim sCode As String
+    Dim iRow As Integer
+    Dim sStateName As String
+    Dim bFirst As Boolean
+
+    oSheet = oDoc.Sheets.getByName(&quot;States&quot;)
+    sCode = &quot;(&quot;
+    bFirst = True
+
+    &apos; Start from row 2 (row index 1) - skip header
+    iRow = 1
+    Do While True
+        sStateName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sStateName) = 0 Then Exit Do
+
+        If Not bFirst Then
+            sCode = sCode &amp; &quot;, &quot;
+        End If
+        sCode = sCode &amp; sStateName
+        bFirst = False
+
+        iRow = iRow + 1
+    Loop
+
+    sCode = sCode &amp; &quot;)&quot;
+
+    GenerateStateEnum = sCode
+End Function
+
+Function GenerateStateMachineLogic(oDoc As Object) As String
+    &apos; Generate the main state machine CASE statement
+    Dim sCode As String
+    Dim sStateVarName As String
+    Dim sInitialState As String
+
+    sStateVarName = GetConfigValue(oDoc, &quot;State Variable Name&quot;)
+    sInitialState = GetConfigValue(oDoc, &quot;Initial State&quot;)
+
+    sCode = NL()
+    sCode = sCode &amp; &quot;(* State Machine Logic *)&quot; &amp; NL()
+    sCode = sCode &amp; &quot;CASE &quot; &amp; sStateVarName &amp; &quot; OF&quot; &amp; NL()
+    sCode = sCode &amp; GenerateStateCases(oDoc)
+    sCode = sCode &amp; NL()
+    sCode = sCode &amp; &quot;    ELSE&quot; &amp; NL()
+    sCode = sCode &amp; &quot;        (* Unknown state: recover to initial state *)&quot; &amp; NL()
+    sCode = sCode &amp; &quot;        &quot; &amp; sStateVarName &amp; &quot; := &quot; &amp; sInitialState &amp; &quot;;&quot; &amp; NL()
+    sCode = sCode &amp; &quot;END_CASE;&quot; &amp; NL()
+
+    GenerateStateMachineLogic = sCode
+End Function
+
+Function GenerateStateCases(oDoc As Object) As String
+    &apos; Generate each state case with actions and transitions
+    Dim oStatesSheet As Object
+    Dim sCode As String
+    Dim iRow As Integer
+    Dim iStateIndex As Integer
+    Dim sStateName As String
+
+    oStatesSheet = oDoc.Sheets.getByName(&quot;States&quot;)
+    sCode = &quot;&quot;
+
+    &apos; Start from row 2 (row index 1) - skip header
+    iRow = 1
+    iStateIndex = 1
+    Do While True
+        sStateName = GetCellValue(oStatesSheet, 1, iRow)  &apos; Column B
+        If Len(sStateName) = 0 Then Exit Do
+
+        sCode = sCode &amp; NL()
+        sCode = sCode &amp; &quot;    &quot; &amp; sStateName &amp; &quot;:&quot; &amp; NL()
+        sCode = sCode &amp; GenerateStateActions(oDoc, sStateName, iStateIndex)
+        sCode = sCode &amp; GenerateStateTransitions(oDoc, sStateName)
+
+        iRow = iRow + 1
+        iStateIndex = iStateIndex + 1
+    Loop
+
+    GenerateStateCases = sCode
+End Function
+
+Function GenerateStateActions(oDoc As Object, sStateName As String, iStateIndex As Integer) As String
+    &apos; Generate output assignments for a specific state.
+    &apos; Output names are read from the StateActions header row, so column order
+    &apos; in StateActions is authoritative and there is no fixed output limit.
+    Dim oActionsSheet As Object
+    Dim sCode As String
+    Dim iStateRow As Integer
+    Dim iCol As Integer
+    Dim sOutputName As String
+    Dim sStateOut As String
+
+    oActionsSheet = oDoc.Sheets.getByName(&quot;StateActions&quot;)
+    sStateOut = GetConfigValue(oDoc, &quot;State Output Variable&quot;)
+
+    sCode = &quot;        (* Actions *)&quot; &amp; NL()
+
+    If Len(sStateOut) &gt; 0 Then
+        sCode = sCode &amp; &quot;        &quot; &amp; sStateOut &amp; &quot; := &quot; &amp; iStateIndex &amp; &quot;;&quot; &amp; NL()
+    End If
+
+    iStateRow = FindRowByValue(oActionsSheet, 0, sStateName)
+    If iStateRow = -1 Then
+        sCode = sCode &amp; &quot;        (* No StateActions row for this state: outputs hold their previous values *)&quot; &amp; NL()
+    Else
+        &apos; Iterate StateActions header columns until the first empty header cell
+        iCol = 1
+        Do While True
+            sOutputName = GetCellValue(oActionsSheet, iCol, 0)  &apos; Header row
+            If Len(sOutputName) = 0 Then Exit Do
+
+            If Val(GetCellValue(oActionsSheet, iCol, iStateRow)) = 1 Then
+                sCode = sCode &amp; &quot;        &quot; &amp; sOutputName &amp; &quot; := TRUE;&quot; &amp; NL()
+            Else
+                sCode = sCode &amp; &quot;        &quot; &amp; sOutputName &amp; &quot; := FALSE;&quot; &amp; NL()
+            End If
+
+            iCol = iCol + 1
+        Loop
+    End If
+
+    sCode = sCode &amp; NL()
+
+    GenerateStateActions = sCode
+End Function
+
+Function GenerateStateTransitions(oDoc As Object, sFromState As String) As String
+    &apos; Generate IF-ELSIF chain for state transitions
+    Dim oSheet As Object
+    Dim sCode As String
+    Dim iRow As Integer
+    Dim sFrom As String
+    Dim sTo As String
+    Dim sCondition As String
+    Dim sComment As String
+    Dim bFirst As Boolean
+    Dim sStateVarName As String
+
+    oSheet = oDoc.Sheets.getByName(&quot;Transitions&quot;)
+    sStateVarName = GetConfigValue(oDoc, &quot;State Variable Name&quot;)
+
+    sCode = &quot;        (* Transitions *)&quot; &amp; NL()
+    bFirst = True
+
+    &apos; Start from row 2 (row index 1) - skip header
+    iRow = 1
+    Do While True
+        sFrom = GetCellValue(oSheet, 0, iRow)  &apos; Column A
+        If Len(sFrom) = 0 Then Exit Do
+
+        If SameText(sFrom, sFromState) Then
+            sTo = GetCellValue(oSheet, 1, iRow)        &apos; Column B
+            sCondition = GetCellValue(oSheet, 2, iRow) &apos; Column C
+            sComment = GetCellValue(oSheet, 3, iRow)   &apos; Column D
+
+            If bFirst Then
+                sCode = sCode &amp; &quot;        IF &quot;
+                bFirst = False
+            Else
+                sCode = sCode &amp; &quot;        ELSIF &quot;
+            End If
+
+            sCode = sCode &amp; sCondition &amp; &quot; THEN&quot;
+            If Len(sComment) &gt; 0 Then
+                sCode = sCode &amp; &quot;  (* &quot; &amp; sComment &amp; &quot; *)&quot;
+            End If
+            sCode = sCode &amp; NL()
+            sCode = sCode &amp; &quot;            &quot; &amp; sStateVarName &amp; &quot; := &quot; &amp; sTo &amp; &quot;;&quot; &amp; NL()
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    If Not bFirst Then
+        sCode = sCode &amp; &quot;        END_IF;&quot; &amp; NL()
+    Else
+        sCode = sCode &amp; &quot;        (* No transitions *)&quot; &amp; NL()
+    End If
+
+    GenerateStateTransitions = sCode
+End Function
+
+&apos; ================= Validation =================
+
+Sub ValidateStateMachine(oDoc As Object, ByRef sErrors As String, ByRef sWarnings As String)
+    &apos; Cross-check the whole spreadsheet before generating code.
+    &apos; Errors block generation; warnings ask for confirmation.
+    Dim oSheet As Object
+    Dim oTransSheet As Object
+    Dim aStates(499) As String
+    Dim nStates As Integer
+    Dim aIO(999) As String
+    Dim nIO As Integer
+    Dim aOutputs(499) As String
+    Dim nOutputs As Integer
+    Dim i As Integer
+    Dim iRow As Integer
+    Dim iCol As Integer
+    Dim sName As String
+    Dim bFound As Boolean
+    Dim sFrom As String
+    Dim sTo As String
+    Dim sCondition As String
+
+    sErrors = &quot;&quot;
+    sWarnings = &quot;&quot;
+
+    &apos; --- Required sheets ---
+    Dim aSheetNames(5) As String
+    aSheetNames(0) = &quot;Config&quot;
+    aSheetNames(1) = &quot;Inputs&quot;
+    aSheetNames(2) = &quot;Outputs&quot;
+    aSheetNames(3) = &quot;States&quot;
+    aSheetNames(4) = &quot;Transitions&quot;
+    aSheetNames(5) = &quot;StateActions&quot;
+    For i = 0 To 5
+        If Not oDoc.Sheets.hasByName(aSheetNames(i)) Then
+            Call AddMsg(sErrors, &quot;Missing sheet: &quot; &amp; aSheetNames(i))
+        End If
+    Next i
+    If Len(sErrors) &gt; 0 Then Exit Sub  &apos; cannot check anything else
+
+    &apos; --- Config values ---
+    Dim sProgName As String
+    Dim sStateVar As String
+    Dim sInitState As String
+    Dim sEnumType As String
+    Dim sStateOut As String
+
+    sProgName = GetConfigValue(oDoc, &quot;Program Name&quot;)
+    sStateVar = GetConfigValue(oDoc, &quot;State Variable Name&quot;)
+    sInitState = GetConfigValue(oDoc, &quot;Initial State&quot;)
+    sEnumType = GetConfigValue(oDoc, &quot;State Enum Type Name&quot;)
+    sStateOut = GetConfigValue(oDoc, &quot;State Output Variable&quot;)
+
+    If Len(sProgName) = 0 Then
+        Call AddMsg(sErrors, &quot;Config: &apos;Program Name&apos; is empty&quot;)
+    ElseIf Not IsValidIdentifier(sProgName) Then
+        Call AddMsg(sErrors, &quot;Config: Program Name &apos;&quot; &amp; sProgName &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+    End If
+
+    If Len(sStateVar) = 0 Then
+        Call AddMsg(sErrors, &quot;Config: &apos;State Variable Name&apos; is empty&quot;)
+    ElseIf Not IsValidIdentifier(sStateVar) Then
+        Call AddMsg(sErrors, &quot;Config: State Variable Name &apos;&quot; &amp; sStateVar &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+    End If
+
+    If Len(sEnumType) &gt; 0 And Not IsValidIdentifier(sEnumType) Then
+        Call AddMsg(sErrors, &quot;Config: State Enum Type Name &apos;&quot; &amp; sEnumType &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+    End If
+
+    If Len(sStateOut) &gt; 0 And Not IsValidIdentifier(sStateOut) Then
+        Call AddMsg(sErrors, &quot;Config: State Output Variable &apos;&quot; &amp; sStateOut &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+    End If
+
+    &apos; --- States ---
+    oSheet = oDoc.Sheets.getByName(&quot;States&quot;)
+    nStates = 0
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        If Not IsValidIdentifier(sName) Then
+            Call AddMsg(sErrors, &quot;States: &apos;&quot; &amp; sName &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+        End If
+        If InList(aStates, nStates, sName) Then
+            Call AddMsg(sErrors, &quot;States: duplicate state &apos;&quot; &amp; sName &amp; &quot;&apos;&quot;)
+        End If
+        aStates(nStates) = sName
+        nStates = nStates + 1
+
+        iRow = iRow + 1
+    Loop
+    If nStates = 0 Then
+        Call AddMsg(sErrors, &quot;States: no states defined&quot;)
+    End If
+
+    If Len(sInitState) = 0 Then
+        Call AddMsg(sErrors, &quot;Config: &apos;Initial State&apos; is empty&quot;)
+    ElseIf nStates &gt; 0 And Not InList(aStates, nStates, sInitState) Then
+        Call AddMsg(sErrors, &quot;Config: Initial State &apos;&quot; &amp; sInitState &amp; &quot;&apos; is not defined in the States sheet&quot;)
+    End If
+
+    &apos; --- Inputs / Outputs ---
+    nIO = 0
+    nOutputs = 0
+
+    oSheet = oDoc.Sheets.getByName(&quot;Inputs&quot;)
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        If Not IsValidIdentifier(sName) Then
+            Call AddMsg(sErrors, &quot;Inputs: &apos;&quot; &amp; sName &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+        End If
+        If InList(aIO, nIO, sName) Then
+            Call AddMsg(sErrors, &quot;Inputs: duplicate variable name &apos;&quot; &amp; sName &amp; &quot;&apos;&quot;)
+        End If
+        aIO(nIO) = sName
+        nIO = nIO + 1
+
+        iRow = iRow + 1
+    Loop
+
+    oSheet = oDoc.Sheets.getByName(&quot;Outputs&quot;)
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        If Not IsValidIdentifier(sName) Then
+            Call AddMsg(sErrors, &quot;Outputs: &apos;&quot; &amp; sName &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+        End If
+        If InList(aIO, nIO, sName) Then
+            Call AddMsg(sErrors, &quot;Outputs: duplicate variable name &apos;&quot; &amp; sName &amp; &quot;&apos; (also check Inputs)&quot;)
+        End If
+        aIO(nIO) = sName
+        nIO = nIO + 1
+        aOutputs(nOutputs) = sName
+        nOutputs = nOutputs + 1
+
+        iRow = iRow + 1
+    Loop
+
+    If Len(sStateVar) &gt; 0 And InList(aIO, nIO, sStateVar) Then
+        Call AddMsg(sErrors, &quot;Config: State Variable Name &apos;&quot; &amp; sStateVar &amp; &quot;&apos; collides with an input/output name&quot;)
+    End If
+    If Len(sStateOut) &gt; 0 And InList(aIO, nIO, sStateOut) Then
+        Call AddMsg(sErrors, &quot;Config: State Output Variable &apos;&quot; &amp; sStateOut &amp; &quot;&apos; collides with an input/output name&quot;)
+    End If
+
+    &apos; --- Transitions ---
+    oTransSheet = oDoc.Sheets.getByName(&quot;Transitions&quot;)
+    iRow = 1
+    Do While True
+        sFrom = GetCellValue(oTransSheet, 0, iRow)  &apos; Column A
+        If Len(sFrom) = 0 Then Exit Do
+
+        sTo = GetCellValue(oTransSheet, 1, iRow)        &apos; Column B
+        sCondition = GetCellValue(oTransSheet, 2, iRow) &apos; Column C
+
+        If Not InList(aStates, nStates, sFrom) Then
+            Call AddMsg(sErrors, &quot;Transitions row &quot; &amp; (iRow + 1) &amp; &quot;: From state &apos;&quot; &amp; sFrom &amp; &quot;&apos; is not defined in the States sheet&quot;)
+        End If
+        If Len(sTo) = 0 Then
+            Call AddMsg(sErrors, &quot;Transitions row &quot; &amp; (iRow + 1) &amp; &quot;: To state is empty&quot;)
+        ElseIf Not InList(aStates, nStates, sTo) Then
+            Call AddMsg(sErrors, &quot;Transitions row &quot; &amp; (iRow + 1) &amp; &quot;: To state &apos;&quot; &amp; sTo &amp; &quot;&apos; is not defined in the States sheet&quot;)
+        End If
+        If Len(sCondition) = 0 Then
+            Call AddMsg(sErrors, &quot;Transitions row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sFrom &amp; &quot;&apos; -&gt; &apos;&quot; &amp; sTo &amp; &quot;&apos;): condition is empty&quot;)
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    &apos; --- StateActions ---
+    oSheet = oDoc.Sheets.getByName(&quot;StateActions&quot;)
+
+    &apos; Header columns must be declared outputs
+    iCol = 1
+    Do While True
+        sName = GetCellValue(oSheet, iCol, 0)  &apos; Header row
+        If Len(sName) = 0 Then Exit Do
+
+        If Not InList(aOutputs, nOutputs, sName) Then
+            Call AddMsg(sErrors, &quot;StateActions: header column &apos;&quot; &amp; sName &amp; &quot;&apos; is not defined in the Outputs sheet&quot;)
+        End If
+
+        iCol = iCol + 1
+    Loop
+
+    &apos; Declared outputs that never appear in the header are never assigned
+    For i = 0 To nOutputs - 1
+        If Not InActionsHeader(oSheet, aOutputs(i)) Then
+            Call AddMsg(sWarnings, &quot;StateActions: output &apos;&quot; &amp; aOutputs(i) &amp; &quot;&apos; has no column, so it is never assigned&quot;)
+        End If
+    Next i
+
+    &apos; Every state should have a StateActions row
+    For i = 0 To nStates - 1
+        If FindRowByValue(oSheet, 0, aStates(i)) = -1 Then
+            Call AddMsg(sWarnings, &quot;StateActions: no row for state &apos;&quot; &amp; aStates(i) &amp; &quot;&apos;: its outputs will hold their previous values&quot;)
+        End If
+    Next i
+
+    &apos; Rows that do not match any state are ignored
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 0, iRow)  &apos; Column A
+        If Len(sName) = 0 Then Exit Do
+
+        If Not InList(aStates, nStates, sName) Then
+            Call AddMsg(sWarnings, &quot;StateActions: row &apos;&quot; &amp; sName &amp; &quot;&apos; does not match any state (ignored)&quot;)
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    &apos; --- Unreachable states ---
+    For i = 0 To nStates - 1
+        If Not SameText(aStates(i), sInitState) Then
+            bFound = False
+            iRow = 1
+            Do While True
+                sName = GetCellValue(oTransSheet, 0, iRow)  &apos; Column A (row terminator)
+                If Len(sName) = 0 Then Exit Do
+                If SameText(GetCellValue(oTransSheet, 1, iRow), aStates(i)) Then
+                    bFound = True
+                    Exit Do
+                End If
+                iRow = iRow + 1
+            Loop
+            If Not bFound Then
+                Call AddMsg(sWarnings, &quot;State &apos;&quot; &amp; aStates(i) &amp; &quot;&apos; is unreachable: no transition leads to it&quot;)
+            End If
+        End If
+    Next i
+End Sub
+
+&apos; ================= Helpers =================
+
+Function NL() As String
+    &apos; Line ending for generated code (CRLF for Windows PLC IDE compatibility)
+    NL = Chr(13) &amp; Chr(10)
+End Function
+
+Sub AddMsg(ByRef sList As String, sMsg As String)
+    &apos; Append a bullet line to an error/warning list
+    If Len(sList) &gt; 0 Then
+        sList = sList &amp; NL()
+    End If
+    sList = sList &amp; &quot;- &quot; &amp; sMsg
+End Sub
+
+Function SameText(sA As String, sB As String) As Boolean
+    &apos; Case-insensitive comparison (ST identifiers are case-insensitive)
+    SameText = (UCase(Trim(sA)) = UCase(Trim(sB)))
+End Function
+
+Function IsValidIdentifier(sName As String) As Boolean
+    &apos; Check IEC 61131-3 identifier rules: letter or underscore first,
+    &apos; then letters, digits, or underscores
+    Const FIRST_CHARS = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ_&quot;
+    Const OTHER_CHARS = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789&quot;
+    Dim i As Integer
+
+    IsValidIdentifier = False
+    If Len(sName) = 0 Then Exit Function
+    If InStr(FIRST_CHARS, UCase(Mid(sName, 1, 1))) = 0 Then Exit Function
+    For i = 2 To Len(sName)
+        If InStr(OTHER_CHARS, UCase(Mid(sName, i, 1))) = 0 Then Exit Function
+    Next i
+    IsValidIdentifier = True
+End Function
+
+Function InList(aList() As String, nCount As Integer, sValue As String) As Boolean
+    &apos; Case-insensitive membership test in the first nCount entries
+    Dim i As Integer
+
+    InList = False
+    For i = 0 To nCount - 1
+        If SameText(aList(i), sValue) Then
+            InList = True
+            Exit Function
+        End If
+    Next i
+End Function
+
+Function GetConfigValue(oDoc As Object, sLabel As String) As String
+    &apos; Look up a Config value by its label in column A.
+    &apos; Robust to rows being moved, inserted, or a header row being added.
+    Dim oSheet As Object
+    Dim iRow As Integer
+
+    GetConfigValue = &quot;&quot;
+    If Not oDoc.Sheets.hasByName(&quot;Config&quot;) Then Exit Function
+    oSheet = oDoc.Sheets.getByName(&quot;Config&quot;)
+
+    For iRow = 0 To 49
+        If SameText(GetCellValue(oSheet, 0, iRow), sLabel) Then
+            GetConfigValue = GetCellValue(oSheet, 1, iRow)
+            Exit Function
+        End If
+    Next iRow
+End Function
+
+Function FindRowByValue(oSheet As Object, iCol As Integer, sValue As String) As Integer
+    &apos; Find the row index of a value in a column, scanning from row 2 until
+    &apos; the first empty cell. Returns -1 if not found.
+    Dim iRow As Integer
+    Dim sCell As String
+
+    iRow = 1
+    Do While True
+        sCell = GetCellValue(oSheet, iCol, iRow)
+        If Len(sCell) = 0 Then
+            FindRowByValue = -1
+            Exit Function
+        End If
+        If SameText(sCell, sValue) Then
+            FindRowByValue = iRow
+            Exit Function
+        End If
+        iRow = iRow + 1
+    Loop
+End Function
+
+Function InActionsHeader(oSheet As Object, sName As String) As Boolean
+    &apos; Check whether a name appears in the StateActions header row (from column B)
+    Dim iCol As Integer
+    Dim sCell As String
+
+    InActionsHeader = False
+    iCol = 1
+    Do While True
+        sCell = GetCellValue(oSheet, iCol, 0)
+        If Len(sCell) = 0 Then Exit Function
+        If SameText(sCell, sName) Then
+            InActionsHeader = True
+            Exit Function
+        End If
+        iCol = iCol + 1
+    Loop
+End Function
+
+Function GetCellValue(oSheet As Object, iCol As Integer, iRow As Integer) As String
+    &apos; Get cell value as trimmed string (0-indexed)
+    Dim oCell As Object
+    Dim sValue As String
+
+    On Error Resume Next
+    oCell = oSheet.getCellByPosition(iCol, iRow)
+    sValue = Trim(oCell.getString())
+
+    GetCellValue = sValue
+End Function
+
+&apos; ================= File export =================
+
+Sub WriteStringToUrl(sUrl As String, sText As String)
+    &apos; Write a string to a file URL as UTF-8 (cross-platform UNO services)
+    Dim oSimpleFileAccess As Object
+    Dim oOutputStream As Object
+    Dim oTextOutputStream As Object
+
+    oSimpleFileAccess = CreateUnoService(&quot;com.sun.star.ucb.SimpleFileAccess&quot;)
+
+    &apos; Delete file if it exists
+    If oSimpleFileAccess.exists(sUrl) Then
+        oSimpleFileAccess.kill(sUrl)
+    End If
+
+    oOutputStream = oSimpleFileAccess.openFileWrite(sUrl)
+    oTextOutputStream = CreateUnoService(&quot;com.sun.star.io.TextOutputStream&quot;)
+    oTextOutputStream.setOutputStream(oOutputStream)
+    oTextOutputStream.setEncoding(&quot;UTF-8&quot;)
+    oTextOutputStream.writeString(sText)
+    oTextOutputStream.closeOutput()
+    oOutputStream.closeOutput()
+End Sub
+
+Sub ExportToFile(sCode As String, oDoc As Object)
+    &apos; Export generated code to a file chosen by the user
+    Dim sFileName As String
+    Dim sFilePath As String
+    Dim oFilePicker As Object
+
+    sFileName = GetConfigValue(oDoc, &quot;Program Name&quot;) &amp; &quot;.st&quot;
+
+    &apos; Create file picker dialog
+    oFilePicker = CreateUnoService(&quot;com.sun.star.ui.dialogs.FilePicker&quot;)
+    oFilePicker.Initialize(Array(com.sun.star.ui.dialogs.TemplateDescription.FILESAVE_SIMPLE))
+    oFilePicker.setDefaultName(sFileName)
+    oFilePicker.appendFilter(&quot;Structured Text&quot;, &quot;*.st&quot;)
+    oFilePicker.appendFilter(&quot;All Files&quot;, &quot;*.*&quot;)
+    oFilePicker.setCurrentFilter(&quot;Structured Text&quot;)
+
+    If oFilePicker.Execute() = com.sun.star.ui.dialogs.ExecutableDialogResults.OK Then
+        sFilePath = oFilePicker.Files(0)
+
+        On Error GoTo ErrorHandler
+        WriteStringToUrl(sFilePath, sCode)
+
+        MsgBox &quot;State machine code generated successfully!&quot; &amp; Chr(10) &amp; Chr(10) &amp; _
+               &quot;File: &quot; &amp; ConvertFromUrl(sFilePath), 64, &quot;Success&quot;
+        Exit Sub
+
+ErrorHandler:
+        MsgBox &quot;Error writing file: &quot; &amp; Error$ &amp; Chr(10) &amp; Chr(10) &amp; _
+               &quot;Path: &quot; &amp; sFilePath, 16, &quot;Error&quot;
+    End If
+End Sub
+
 
       </ooo:source-code>
      </ooo:module>
@@ -741,6 +1148,7 @@ End Sub
   </office:script>
  </office:scripts>
  <office:font-face-decls>
+  <style:font-face style:name=".AppleSystemUIFont" svg:font-family=".AppleSystemUIFont" style:font-family-generic="swiss"/>
   <style:font-face style:name="Arial Unicode MS" svg:font-family="&apos;Arial Unicode MS&apos;" style:font-family-generic="system" style:font-pitch="variable"/>
   <style:font-face style:name="Liberation Sans" svg:font-family="&apos;Liberation Sans&apos;" style:font-family-generic="swiss" style:font-pitch="variable"/>
  </office:font-face-decls>
@@ -751,7 +1159,7 @@ End Sub
   </style:default-style>
   <style:default-style style:family="graphic">
    <style:graphic-properties svg:stroke-color="#3465a4" draw:fill-color="#729fcf" fo:wrap-option="no-wrap" draw:shadow-offset-x="0.1181in" draw:shadow-offset-y="0.1181in" style:writing-mode="page"/>
-   <style:paragraph-properties style:text-autospace="ideograph-alpha" style:punctuation-wrap="simple" style:line-break="strict" loext:tab-stop-distance="0in" style:writing-mode="page" style:font-independent-line-spacing="false">
+   <style:paragraph-properties style:text-autospace="ideograph-alpha" style:punctuation-wrap="simple" style:line-break="strict" loext:tab-stop-distance="0in" style:font-independent-line-spacing="false">
     <style:tab-stops/>
    </style:paragraph-properties>
    <style:text-properties style:use-window-font-color="true" loext:opacity="0%" fo:font-family="&apos;Liberation Serif&apos;" style:font-family-generic="roman" style:font-pitch="variable" fo:font-size="12pt" fo:language="en" fo:country="US" style:letter-kerning="true" style:font-family-asian="Tahoma" style:font-family-generic-asian="system" style:font-pitch-asian="variable" style:font-size-asian="12pt" style:language-asian="zh" style:country-asian="CN" style:font-family-complex="Tahoma" style:font-family-generic-complex="system" style:font-pitch-complex="variable" style:font-size-complex="12pt" style:language-complex="hi" style:country-complex="IN"/>
@@ -913,7 +1321,7 @@ End Sub
      <text:p><text:sheet-name>???</text:sheet-name><text:s/>(<text:title>???</text:title>)</text:p>
     </style:region-left>
     <style:region-right>
-     <text:p><text:date style:data-style-name="N2" text:date-value="2025-11-29">00/00/0000</text:date>, <text:time style:data-style-name="N2" text:time-value="16:35:29.768522000">00:00:00</text:time></text:p>
+     <text:p><text:date style:data-style-name="N2" text:date-value="2026-07-10">00/00/0000</text:date>, <text:time style:data-style-name="N2" text:time-value="01:22:16.381956000">00:00:00</text:time></text:p>
     </style:region-right>
    </style:header>
    <style:header-left style:display="false"/>
@@ -971,6 +1379,22 @@ End Sub
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>IDLE</text:p>
+     </table:table-cell>
+    </table:table-row>
+    <table:table-row table:style-name="ro1">
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>State Enum Type Name</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>E_FBSeq_State</text:p>
+     </table:table-cell>
+    </table:table-row>
+    <table:table-row table:style-name="ro1">
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>State Output Variable</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>stateNum</text:p>
      </table:table-cell>
     </table:table-row>
    </table:table>
