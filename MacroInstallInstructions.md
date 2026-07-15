@@ -1,7 +1,10 @@
 # State Machine Generator - Macro Installation and Usage
 
 ## Overview
-These macros convert a state machine definition in `ST_StateMachine_Generator.fods` into IEC 61131-3 compliant Structured Text (ST) Function Block code.
+These macros convert a state machine definition in `ST_StateMachine_Generator.fods` into IEC 61131-3 compliant Structured Text (ST) code. Two files are generated:
+
+1. The state machine **Function Block** (e.g. `FB_CrimpDeviceSeq.st`)
+2. A wrapper **PROGRAM** (e.g. `PRG_CrimpDevice.st`) that instantiates the Function Block, runs the external TON timers, and maps the physical I/O
 
 ## Installation Instructions
 
@@ -36,11 +39,14 @@ Once the macros are installed, you can generate ST code:
    - **Config** sheet: Set program name, author, version, state variable name, initial state. Values are found by the label in column A, so the rows can be reordered freely. Two optional settings:
      - **State Enum Type Name**: if set, the states are declared as a named `TYPE` before the Function Block (required by most IDEs such as CODESYS and TwinCAT); if blank, an inline enumeration is used
      - **State Output Variable**: if set, an INT output with this name reports the current state number for HMI/diagnostics; if blank, it is omitted
-   - **Inputs** sheet: Define input variables (BOOL type assumed)
-   - **Outputs** sheet: Define output variables (BOOL type assumed)
+     - **PRG Name**: wrapper PROGRAM name; if blank, defaults to `PRG_<base>` where `<base>` is the Program Name without a leading `FB_` and trailing `Seq`
+     - **FB Instance Name**: FB instance variable in the wrapper PROGRAM; if blank, defaults to `G_<base>`
+   - **Inputs** sheet: Define input variables (BOOL type assumed). Optional column D **Physical Address** (e.g. `%IX0.0`) is used by the wrapper PROGRAM; inputs fed by a timer need no address. If no address is given anywhere, addresses are auto-assigned sequentially.
+   - **Outputs** sheet: Define output variables (BOOL type assumed). Optional column D **Physical Address** (e.g. `%QX0.0`): outputs with an address get a `qx`-prefixed physical variable in the wrapper, refreshed from the FB output each cycle. Leave step-flag outputs unaddressed.
    - **States** sheet: Define all states in your state machine
    - **Transitions** sheet: Define state transitions with conditions
    - **StateActions** sheet: Define output values (0 or 1) for each state; the column headers name the outputs and must match the Outputs sheet
+   - **Timers** sheet (optional): one row per external TON run by the wrapper PROGRAM, columns: **Timer Name** (e.g. `tX2`), **IN Signal** (an FB output such as step flag `X2` is qualified with the instance name; an input name is used directly), **Preset Time** (e.g. `T#2S`), **Done Input** (the FB input fed from the timer's `.Q`), **Comment**, and **IN Signal Address** (optional; if the IN Signal is a physical sensor that is not an FB input/output, give its `%IX` address and the wrapper declares it)
 
 2. **Generate the code**:
    - Go to **Tools → Macros → Run Macro**
@@ -53,17 +59,18 @@ Once the macros are installed, you can generate ST code:
    - **Errors** (missing/duplicate/invalid state and variable names, transitions to undefined states, empty conditions, unknown StateActions columns, etc.) block generation and are listed with their sheet and row
    - **Warnings** (a state with no StateActions row, an output with no StateActions column, unreachable states, etc.) are listed and ask whether to continue
 
-4. **Save the generated file**:
+4. **Save the generated files**:
    - A file picker dialog will appear (default name is the Program Name)
-   - Choose the location and name for your .st file
+   - Choose the location and name for the Function Block .st file
    - Click **Save**
-   - You'll see a success message with the file path
+   - The wrapper PROGRAM is written as `<PRG Name>.st` into the same folder (an existing file with that name is overwritten)
+   - You'll see a success message with both file paths
 
 ### Preview Code (Optional)
 
 To preview the generated code before saving:
 - Run the `PreviewStateMachine` macro instead
-- The full code is shown in a scrollable dialog with a **Save to File** button
+- Both files are shown in a scrollable dialog with a **Save to Files** button
 
 ## Generated Code Structure
 
@@ -118,9 +125,37 @@ END_CASE;
 END_FUNCTION_BLOCK
 ```
 
+The wrapper PROGRAM has this structure (see `PRG_CrimpDevice.st` for a real example):
+
+```
+(* Header with metadata *)
+
+PROGRAM <PRGName>
+
+VAR
+    <input> AT %IX0.0 : BOOL;      (physical inputs; timer-done inputs omitted)
+    qx<output> AT %QX0.0 : BOOL;   (physical outputs, for outputs with an address)
+
+    <instance> : <ProgramName>;    (the Function Block instance)
+    <timer> : TON;                 (one per Timers row)
+END_VAR
+
+(* Timers are driven by the step flag outputs of the state machine *)
+<timer>(IN := <instance>.<step flag>, PT := T#2S);
+
+<instance>(
+    <input> := <input>,
+    <doneInput> := <timer>.Q);
+
+(* Refresh the physical output image *)
+qx<output> := <instance>.<output>;
+
+END_PROGRAM
+```
+
 ## Example Output
 
-See `examples/FBSeq.st` for the exact output generated from the sample data shipped in the spreadsheet.
+See `examples/FBSeq.st` for the exact output generated from the sample data shipped in the spreadsheet. `CrimpDevice_StateMachine.fods` is a complete worked example with timers and physical addresses; it regenerates `FB_CrimpDeviceSeq.st` and the shipped `PRG_CrimpDevice.st`.
 
 ## Features
 
@@ -132,6 +167,8 @@ See `examples/FBSeq.st` for the exact output generated from the sample data ship
 ✓ Condition-based state transitions with comments
 ✓ State-specific output actions (matched by StateActions column headers)
 ✓ Optional current-state INT output for HMI/diagnostics
+✓ Wrapper PROGRAM generation with FB instantiation, external timers, and physical I/O mapping
+✓ Optional per-variable physical addresses with automatic sequential fallback
 ✓ Header comments with metadata and timestamp
 ✓ File export with .st extension (CRLF line endings)
 
@@ -143,6 +180,7 @@ You can modify the generated code format by editing these functions in `StateMac
 - `GenerateEnumTypeBlock()` - Named TYPE declaration format
 - `GenerateStateActions()` - Output assignment format
 - `GenerateStateTransitions()` - Transition logic format
+- `BuildProgramCode()` / `GenerateProgramVars()` / `GenerateTimerCalls()` / `GenerateFBCall()` / `GenerateOutputRefresh()` - Wrapper PROGRAM format
 - `ValidateStateMachine()` - Validation rules
 
 ## Notes

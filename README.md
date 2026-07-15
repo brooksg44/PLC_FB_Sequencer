@@ -4,7 +4,10 @@ Generate IEC 61131-3 compliant Structured Text (ST) Function Blocks from spreads
 
 ## Overview
 
-This tool converts state machine specifications defined in a LibreOffice Calc spreadsheet into production-ready Structured Text code for PLCs. Define your states, transitions, and I/O actions in an intuitive spreadsheet format, then generate standards-compliant Function Block code with a single click.
+This tool converts state machine specifications defined in a LibreOffice Calc spreadsheet into production-ready Structured Text code for PLCs. Define your states, transitions, and I/O actions in an intuitive spreadsheet format, then generate standards-compliant code with a single click. Two files are generated:
+
+1. **`FB_<name>.st`** - the state machine Function Block
+2. **`PRG_<name>.st`** - a wrapper PROGRAM that instantiates the Function Block, runs the external TON timers, and maps the physical I/O (`%IX`/`%QX` addresses)
 
 ## Features
 
@@ -19,6 +22,9 @@ This tool converts state machine specifications defined in a LibreOffice Calc sp
 - ✓ **State Number Output** - Optional INT output for HMI/diagnostics
 - ✓ **Preview & Export** - Scrollable preview with direct file export
 - ✓ **Metadata Support** - Author, version, and timestamp in generated code
+- ✓ **Wrapper PROGRAM Generation** - PRG_* code that calls the Function Block, with physical I/O mapping and external timers
+- ✓ **Timers Sheet** - Declare TONs driven by step flags; their done flags feed back into the sequencer inputs
+- ✓ **Physical Addressing** - Per-variable `%IX`/`%QX` addresses, or automatic sequential assignment
 
 ## Quick Start
 
@@ -33,6 +39,7 @@ This tool converts state machine specifications defined in a LibreOffice Calc sp
 - **ST_StateMachine_Generator.fods** - State machine definition spreadsheet (flat-XML OpenDocument, diff-friendly in git)
 - **StateMachineMacros.bas** - LibreOffice Basic macro code
 - **MacroInstallInstructions.md** - Detailed installation and usage guide
+- **CrimpDevice_StateMachine.fods** - Complete worked example with timers and physical addresses; regenerates `FB_CrimpDeviceSeq.st` and the shipped `PRG_CrimpDevice.st`
 - **examples/FBSeq.st** - Output generated from the sample data in the spreadsheet
 - **README.md** - This file
 
@@ -65,14 +72,18 @@ Values are looked up by the label in column A, so rows can be reordered or added
 - **Initial State** - Starting state; must exist in the States tab (required)
 - **State Enum Type Name** - If set (e.g., `E_FBSeq_State`), states are declared as a named `TYPE` before the Function Block, which most IDEs (CODESYS, TwinCAT) require. Leave blank to use an inline enumeration instead.
 - **State Output Variable** - If set (e.g., `stateNum`), an INT output with this name reports the current state number (row order in the States tab) for HMI/diagnostics. Leave blank to omit.
+- **PRG Name** - Wrapper PROGRAM name (optional). Defaults to `PRG_<base>`, where `<base>` is the Program Name without a leading `FB_` and trailing `Seq` (e.g., `FB_CrimpDeviceSeq` → `PRG_CrimpDevice`).
+- **FB Instance Name** - Name of the FB instance variable in the wrapper PROGRAM (optional). Defaults to `G_<base>`.
 
 #### Inputs Tab
 - Define boolean input variables (IN_01, IN_02, etc.)
 - Add descriptions for documentation
+- **Physical Address** (column D, optional) - e.g., `%IX0.0`; the wrapper PROGRAM declares the input `AT` this address. Inputs listed as a timer's *Done Input* need no address (they are fed from the timer's `.Q`). If no address is given anywhere, addresses are auto-assigned sequentially.
 
 #### Outputs Tab
 - Define boolean output variables (OUT_01, OUT_02, etc.)
 - Add descriptions for documentation
+- **Physical Address** (column D, optional) - e.g., `%QX0.0`; the wrapper PROGRAM declares a `qx`-prefixed physical output `AT` this address and refreshes it from the FB output each cycle. Leave step-flag outputs (X1, X2, ...) without an address so they stay internal.
 
 #### States Tab
 - List all states in your state machine (IDLE, RUNNING, ERROR, etc.)
@@ -90,22 +101,35 @@ Values are looked up by the label in column A, so rows can be reordered or added
 - Enter `1` for TRUE, `0` for FALSE
 - Defines output values for each state
 
+#### Timers Tab (optional)
+
+One row per external TON run by the wrapper PROGRAM:
+
+- **Timer Name** - TON instance name (e.g., `tX2`)
+- **IN Signal** - What starts the timer; an FB output name (e.g., step flag `X2`) is qualified with the instance name (`G_CrimpDevice.X2`), an input name is used directly
+- **Preset Time** - Time literal (e.g., `T#2S`)
+- **Done Input** - The FB input fed from the timer's `.Q` output (e.g., `T1CrimpDone`)
+- **Comment** - Optional, appears next to the TON declaration
+- **IN Signal Address** - Optional; if the IN Signal is a physical sensor that is not an FB input/output (e.g., a level switch only the timer reads), give its `%IX` address here and the wrapper declares it
+
+Delete the sheet or leave it empty if the state machine needs no external timers.
+
 ### 2. Generate Code
 
 Both macros first validate the spreadsheet. Errors (undefined states, empty conditions, duplicate or invalid names, etc.) block generation and are listed in a dialog; warnings (e.g., a state with no StateActions row, unreachable states) ask for confirmation.
 
 **PreviewStateMachine** (Recommended)
-- Opens scrollable dialog with full code preview
-- "Save to File" button to export
+- Opens scrollable dialog previewing both generated files
+- "Save to Files" button to export
 - "Close" button to cancel
 
 **GenerateStateMachine**
 - Directly opens save dialog (default filename is the Program Name)
-- Immediately exports to .st file
+- Exports the Function Block to the chosen file and writes the wrapper `<PRG Name>.st` into the same folder
 
 ### 3. Use in Your PLC Project
 
-Import the generated `.st` file into your PLC programming environment (CODESYS, TwinCAT, etc.) and instantiate the Function Block in your program.
+Import both generated `.st` files into your PLC programming environment (CODESYS, TwinCAT, etc.) and add the PRG_* program to a cyclic task. The wrapper already instantiates the Function Block, runs the timers, and refreshes the physical outputs.
 
 ## Example
 
@@ -216,6 +240,13 @@ For detailed usage instructions, see `MacroInstallInstructions.md`.
 
 ## Version History
 
+- **1.2** (2026-07-15)
+  - Wrapper PROGRAM (PRG_*) generation alongside the Function Block: FB instantiation, external TON timers, and physical I/O mapping
+  - New optional Timers sheet (Timer Name, IN Signal, Preset Time, Done Input, Comment, IN Signal Address)
+  - New optional Physical Address column (D) on the Inputs and Outputs sheets, with automatic sequential assignment when omitted
+  - New optional Config entries: PRG Name and FB Instance Name (sensible defaults derived from the Program Name)
+  - Preview dialog shows both files; export writes both files in one step
+  - Validation extended to timers, done inputs, and duplicate/misprefixed physical addresses
 - **1.1** (2026-07-10)
   - Validation pass before generation (errors block, warnings confirm)
   - Config values looked up by label instead of fixed cell positions

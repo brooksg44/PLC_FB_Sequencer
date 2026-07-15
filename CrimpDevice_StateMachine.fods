@@ -229,11 +229,13 @@
      <ooo:module ooo:name="Module1">
       <ooo:source-code>REM ***** BASIC *****
 REM State Machine Generator for IEC 61131-3 Structured Text
-REM Converts the state machine definition in this spreadsheet into an ST Function Block.
+REM Converts the state machine definition in this spreadsheet into an ST Function
+REM Block plus a wrapper PROGRAM that instantiates it, runs the external timers,
+REM and maps physical I/O.
 REM
 REM Entry points:
-REM   PreviewStateMachine  - validate, then preview the generated code in a dialog
-REM   GenerateStateMachine - validate, then export the generated code to a .st file
+REM   PreviewStateMachine  - validate, then preview both generated files in a dialog
+REM   GenerateStateMachine - validate, then export both generated files (.st)
 REM
 REM Config sheet options (label in column A, value in column B; rows may be in any order):
 REM   Program Name          - Function Block name (required)
@@ -247,36 +249,68 @@ REM                           an inline enumeration is used
 REM   State Output Variable - if set, an INT output with this name reports the current
 REM                           state number (row order in the States sheet) for
 REM                           HMI/diagnostics
+REM   PRG Name              - wrapper PROGRAM name (optional); defaults to PRG_&lt;base&gt;,
+REM                           where &lt;base&gt; is the Program Name without a leading &apos;FB_&apos;
+REM                           and trailing &apos;Seq&apos;
+REM   FB Instance Name      - FB instance variable in the wrapper PROGRAM (optional);
+REM                           defaults to G_&lt;base&gt;
+REM
+REM Wrapper PROGRAM data (all optional, backward compatible):
+REM   Inputs/Outputs column D &apos;Physical Address&apos; - e.g. %IX0.0 for inputs, %QX0.0 for
+REM       outputs. Inputs with an address become physical vars (name AT %IX..); outputs
+REM       with an address get a qx-prefixed physical var refreshed from the FB output.
+REM       If no address is given anywhere, addresses are auto-assigned sequentially.
+REM   Timers sheet - one row per external TON, columns:
+REM       A: Timer Name  B: IN Signal  C: Preset Time  D: Done Input  E: Comment
+REM       F: IN Signal Address (optional)
+REM       The timer runs in the wrapper (tX(IN := &lt;IN Signal&gt;, PT := &lt;Preset Time&gt;))
+REM       and its .Q output feeds the FB input named in &apos;Done Input&apos;. An IN Signal
+REM       naming an FB output (e.g. a step flag) is qualified with the instance name.
+REM       If the IN Signal is a physical sensor that is not an FB input/output, give
+REM       its address in column F and the wrapper declares it (name AT %IX.. : BOOL).
 
 Option Explicit
 
 &apos; Globals used by the preview dialog&apos;s Save button listener
 Global GlobalCodeToSave As String
+Global GlobalPrgToSave As String
 Global GlobalDoc As Object
 
 &apos; ================= Entry points =================
 
 Sub GenerateStateMachine()
-    &apos; Validate the spreadsheet, generate ST code, and export to a .st file
-    Dim sCode As String
+    &apos; Validate the spreadsheet, generate the FB and wrapper PRG, and export both
+    Dim sFbCode As String
+    Dim sPrgCode As String
 
-    sCode = BuildValidatedCode(ThisComponent)
-    If Len(sCode) = 0 Then Exit Sub
+    sFbCode = BuildValidatedCode(ThisComponent)
+    If Len(sFbCode) = 0 Then Exit Sub
 
-    ExportToFile(sCode, ThisComponent)
+    sPrgCode = BuildProgramCode(ThisComponent)
+
+    ExportBoth(sFbCode, sPrgCode, ThisComponent)
 End Sub
 
 Sub PreviewStateMachine()
-    &apos; Validate the spreadsheet and preview the generated code in a scrollable dialog
-    Dim sCode As String
+    &apos; Validate the spreadsheet and preview both generated files in a scrollable dialog
+    Dim sFbCode As String
+    Dim sPrgCode As String
+    Dim sPreview As String
     Dim oDialogModel As Object
     Dim oDialog As Object
     Dim oTextModel As Object
     Dim oButtonModel As Object
     Dim oSaveButtonModel As Object
 
-    sCode = BuildValidatedCode(ThisComponent)
-    If Len(sCode) = 0 Then Exit Sub
+    sFbCode = BuildValidatedCode(ThisComponent)
+    If Len(sFbCode) = 0 Then Exit Sub
+
+    sPrgCode = BuildProgramCode(ThisComponent)
+
+    sPreview = &quot;(* ========== File 1: &quot; &amp; GetConfigValue(ThisComponent, &quot;Program Name&quot;) &amp; &quot;.st ========== *)&quot; &amp; NL() &amp; NL()
+    sPreview = sPreview &amp; sFbCode &amp; NL()
+    sPreview = sPreview &amp; &quot;(* ========== File 2: &quot; &amp; GetPrgName(ThisComponent) &amp; &quot;.st ========== *)&quot; &amp; NL() &amp; NL()
+    sPreview = sPreview &amp; sPrgCode
 
     &apos; Create dialog
     oDialogModel = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialogModel&quot;)
@@ -294,7 +328,7 @@ Sub PreviewStateMachine()
     oTextModel.VScroll = True
     oTextModel.HScroll = True
     oTextModel.ReadOnly = True
-    oTextModel.Text = sCode
+    oTextModel.Text = sPreview
     oTextModel.FontName = &quot;Courier New&quot;
     oTextModel.FontHeight = 10
     oDialogModel.insertByName(&quot;TextField&quot;, oTextModel)
@@ -305,7 +339,7 @@ Sub PreviewStateMachine()
     oSaveButtonModel.PositionY = 225
     oSaveButtonModel.Width = 60
     oSaveButtonModel.Height = 15
-    oSaveButtonModel.Label = &quot;Save to File&quot;
+    oSaveButtonModel.Label = &quot;Save to Files&quot;
     oSaveButtonModel.PushButtonType = 0  &apos; Standard button
     oDialogModel.insertByName(&quot;SaveButton&quot;, oSaveButtonModel)
 
@@ -329,7 +363,8 @@ Sub PreviewStateMachine()
     Dim oActionListener As Object
     oSaveButton = oDialog.getControl(&quot;SaveButton&quot;)
     oActionListener = CreateUnoListener(&quot;SaveButton_&quot;, &quot;com.sun.star.awt.XActionListener&quot;)
-    GlobalCodeToSave = sCode  &apos; Store code globally for save action
+    GlobalCodeToSave = sFbCode  &apos; Store code globally for save action
+    GlobalPrgToSave = sPrgCode
     GlobalDoc = ThisComponent
     oSaveButton.addActionListener(oActionListener)
 
@@ -339,7 +374,7 @@ End Sub
 
 Sub SaveButton_actionPerformed(oEvent As Object)
     &apos; Save button action handler
-    ExportToFile(GlobalCodeToSave, GlobalDoc)
+    ExportBoth(GlobalCodeToSave, GlobalPrgToSave, GlobalDoc)
 End Sub
 
 Sub SaveButton_disposing(oEvent As Object)
@@ -726,6 +761,441 @@ Function GenerateStateTransitions(oDoc As Object, sFromState As String) As Strin
     GenerateStateTransitions = sCode
 End Function
 
+&apos; ================= Wrapper PROGRAM generation =================
+
+Function DeriveBaseName(oDoc As Object) As String
+    &apos; Machine base name derived from the Program Name by stripping a leading
+    &apos; &apos;FB_&apos; and a trailing &apos;Seq&apos; (e.g. FB_CrimpDeviceSeq -&gt; CrimpDevice)
+    Dim sName As String
+    Dim sBase As String
+
+    sName = GetConfigValue(oDoc, &quot;Program Name&quot;)
+    sBase = sName
+    If UCase(Left(sBase, 3)) = &quot;FB_&quot; Then
+        sBase = Mid(sBase, 4)
+    End If
+    If Len(sBase) &gt; 3 And UCase(Right(sBase, 3)) = &quot;SEQ&quot; Then
+        sBase = Left(sBase, Len(sBase) - 3)
+    End If
+    If Len(sBase) = 0 Then
+        sBase = sName
+    End If
+
+    DeriveBaseName = sBase
+End Function
+
+Function GetPrgName(oDoc As Object) As String
+    &apos; Wrapper PROGRAM name: Config &apos;PRG Name&apos;, or PRG_&lt;base&gt; when blank
+    Dim sName As String
+
+    sName = GetConfigValue(oDoc, &quot;PRG Name&quot;)
+    If Len(sName) = 0 Then
+        sName = &quot;PRG_&quot; &amp; DeriveBaseName(oDoc)
+    End If
+
+    GetPrgName = sName
+End Function
+
+Function GetInstanceName(oDoc As Object) As String
+    &apos; FB instance variable name: Config &apos;FB Instance Name&apos;, or G_&lt;base&gt; when blank
+    Dim sName As String
+
+    sName = GetConfigValue(oDoc, &quot;FB Instance Name&quot;)
+    If Len(sName) = 0 Then
+        sName = &quot;G_&quot; &amp; DeriveBaseName(oDoc)
+    End If
+
+    GetInstanceName = sName
+End Function
+
+Function HasTimers(oDoc As Object) As Boolean
+    &apos; Whether the optional Timers sheet exists and has at least one row
+    Dim oSheet As Object
+
+    HasTimers = False
+    If Not oDoc.Sheets.hasByName(&quot;Timers&quot;) Then Exit Function
+    oSheet = oDoc.Sheets.getByName(&quot;Timers&quot;)
+    HasTimers = (Len(GetCellValue(oSheet, 0, 1)) &gt; 0)
+End Function
+
+Function FindTimerByDoneInput(oDoc As Object, sInputName As String) As String
+    &apos; Return the name of the timer whose &apos;Done Input&apos; column matches an FB input,
+    &apos; or &quot;&quot; when the input is not driven by a timer
+    Dim oSheet As Object
+    Dim iRow As Integer
+    Dim sTimerName As String
+
+    FindTimerByDoneInput = &quot;&quot;
+    If Not oDoc.Sheets.hasByName(&quot;Timers&quot;) Then Exit Function
+    oSheet = oDoc.Sheets.getByName(&quot;Timers&quot;)
+
+    iRow = 1
+    Do While True
+        sTimerName = GetCellValue(oSheet, 0, iRow)  &apos; Column A
+        If Len(sTimerName) = 0 Then Exit Function
+        If SameText(GetCellValue(oSheet, 3, iRow), sInputName) Then  &apos; Column D
+            FindTimerByDoneInput = sTimerName
+            Exit Function
+        End If
+        iRow = iRow + 1
+    Loop
+End Function
+
+Function IsTimerInSignal(oDoc As Object, sName As String) As Boolean
+    &apos; Whether a variable is used as the IN signal of a timer (e.g. a step flag)
+    Dim oSheet As Object
+    Dim iRow As Integer
+
+    IsTimerInSignal = False
+    If Not oDoc.Sheets.hasByName(&quot;Timers&quot;) Then Exit Function
+    oSheet = oDoc.Sheets.getByName(&quot;Timers&quot;)
+
+    iRow = 1
+    Do While True
+        If Len(GetCellValue(oSheet, 0, iRow)) = 0 Then Exit Function
+        If SameText(GetCellValue(oSheet, 1, iRow), sName) Then  &apos; Column B
+            IsTimerInSignal = True
+            Exit Function
+        End If
+        iRow = iRow + 1
+    Loop
+End Function
+
+Function IsOutputName(oDoc As Object, sName As String) As Boolean
+    &apos; Whether a name is declared in the Outputs sheet
+    Dim oSheet As Object
+    Dim iRow As Integer
+    Dim sVarName As String
+
+    IsOutputName = False
+    oSheet = oDoc.Sheets.getByName(&quot;Outputs&quot;)
+
+    iRow = 1
+    Do While True
+        sVarName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sVarName) = 0 Then Exit Function
+        If SameText(sVarName, sName) Then
+            IsOutputName = True
+            Exit Function
+        End If
+        iRow = iRow + 1
+    Loop
+End Function
+
+Function SheetHasAnyAddress(oSheet As Object) As Boolean
+    &apos; Whether any row of an I/O sheet has a Physical Address (column D)
+    Dim iRow As Integer
+
+    SheetHasAnyAddress = False
+    iRow = 1
+    Do While True
+        If Len(GetCellValue(oSheet, 1, iRow)) = 0 Then Exit Function  &apos; Column B terminates
+        If Len(GetCellValue(oSheet, 3, iRow)) &gt; 0 Then  &apos; Column D
+            SheetHasAnyAddress = True
+            Exit Function
+        End If
+        iRow = iRow + 1
+    Loop
+End Function
+
+Function UseAutoAddresses(oDoc As Object) As Boolean
+    &apos; Auto-assign sequential addresses only when no Physical Address is given anywhere
+    UseAutoAddresses = Not (SheetHasAnyAddress(oDoc.Sheets.getByName(&quot;Inputs&quot;)) _
+        Or SheetHasAnyAddress(oDoc.Sheets.getByName(&quot;Outputs&quot;)))
+End Function
+
+Function AutoAddress(sPrefix As String, iIndex As Integer) As String
+    &apos; Sequential bit address: index 0 -&gt; &lt;prefix&gt;0.0, index 8 -&gt; &lt;prefix&gt;1.0
+    AutoAddress = sPrefix &amp; (iIndex \ 8) &amp; &quot;.&quot; &amp; (iIndex Mod 8)
+End Function
+
+Function BuildProgramCode(oDoc As Object) As String
+    &apos; Assemble the wrapper PROGRAM that instantiates the Function Block,
+    &apos; runs the external timers, and maps the physical I/O
+    Dim sCode As String
+    Dim sFbName As String
+    Dim sDocName As String
+
+    sFbName = GetConfigValue(oDoc, &quot;Program Name&quot;)
+    sDocName = &quot;&quot;
+    On Error Resume Next
+    sDocName = oDoc.getTitle()
+    On Error Goto 0
+
+    sCode = &quot;(* ======================================== *)&quot; &amp; NL()
+    sCode = sCode &amp; &quot;(* Wrapper program for &quot; &amp; sFbName &amp; &quot; *)&quot; &amp; NL()
+    If HasTimers(oDoc) Then
+        sCode = sCode &amp; &quot;(* Runs the timers externally and maps physical I/O. *)&quot; &amp; NL()
+    Else
+        sCode = sCode &amp; &quot;(* Maps physical I/O to the state machine. *)&quot; &amp; NL()
+    End If
+    If Len(sDocName) &gt; 0 Then
+        sCode = sCode &amp; &quot;(* &quot; &amp; sFbName &amp; &quot; is generated from &quot; &amp; sDocName &amp; &quot; *)&quot; &amp; NL()
+    End If
+    sCode = sCode &amp; &quot;(* Generated: &quot; &amp; Format(Now(), &quot;YYYY-MM-DD HH:MM:SS&quot;) &amp; &quot; *)&quot; &amp; NL()
+    sCode = sCode &amp; &quot;(* ======================================== *)&quot; &amp; NL()
+    sCode = sCode &amp; NL()
+    sCode = sCode &amp; &quot;PROGRAM &quot; &amp; GetPrgName(oDoc) &amp; NL()
+    sCode = sCode &amp; NL()
+    sCode = sCode &amp; GenerateProgramVars(oDoc)
+    sCode = sCode &amp; NL()
+    sCode = sCode &amp; GenerateTimerCalls(oDoc)
+    sCode = sCode &amp; GenerateFBCall(oDoc)
+    sCode = sCode &amp; GenerateOutputRefresh(oDoc)
+    sCode = sCode &amp; &quot;END_PROGRAM&quot; &amp; NL()
+
+    BuildProgramCode = sCode
+End Function
+
+Function GenerateProgramVars(oDoc As Object) As String
+    &apos; Generate the wrapper VAR section: physical inputs, physical output image,
+    &apos; the FB instance, and the external timers
+    Dim oSheet As Object
+    Dim sCode As String
+    Dim sBlock As String
+    Dim iRow As Integer
+    Dim iAutoIdx As Integer
+    Dim sName As String
+    Dim sDescription As String
+    Dim sAddr As String
+    Dim sComment As String
+    Dim bAuto As Boolean
+
+    bAuto = UseAutoAddresses(oDoc)
+    sCode = &quot;VAR&quot; &amp; NL()
+
+    &apos; Physical inputs (timer-driven inputs are fed from TON.Q instead)
+    oSheet = oDoc.Sheets.getByName(&quot;Inputs&quot;)
+    iAutoIdx = 0
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        If Len(FindTimerByDoneInput(oDoc, sName)) = 0 Then
+            sDescription = GetCellValue(oSheet, 2, iRow)  &apos; Column C
+            sAddr = GetCellValue(oSheet, 3, iRow)         &apos; Column D
+            If Len(sAddr) = 0 And bAuto Then
+                sAddr = AutoAddress(&quot;%IX&quot;, iAutoIdx)
+            End If
+
+            If Len(sAddr) &gt; 0 Then
+                sCode = sCode &amp; &quot;    &quot; &amp; sName &amp; &quot; AT &quot; &amp; sAddr &amp; &quot; : BOOL;&quot;
+            Else
+                sCode = sCode &amp; &quot;    &quot; &amp; sName &amp; &quot; : BOOL;  (* no physical address assigned *)&quot;
+            End If
+            If Len(sDescription) &gt; 0 Then
+                sCode = sCode &amp; &quot;  (* &quot; &amp; sDescription &amp; &quot; *)&quot;
+            End If
+            sCode = sCode &amp; NL()
+            iAutoIdx = iAutoIdx + 1
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    &apos; Physical vars for timer IN signals that are not FB inputs/outputs
+    &apos; (Timers sheet column F &apos;IN Signal Address&apos;)
+    If oDoc.Sheets.hasByName(&quot;Timers&quot;) Then
+        oSheet = oDoc.Sheets.getByName(&quot;Timers&quot;)
+        iRow = 1
+        Do While True
+            sName = GetCellValue(oSheet, 0, iRow)  &apos; Column A
+            If Len(sName) = 0 Then Exit Do
+
+            sAddr = GetCellValue(oSheet, 5, iRow)  &apos; Column F
+            If Len(sAddr) &gt; 0 Then
+                sCode = sCode &amp; &quot;    &quot; &amp; GetCellValue(oSheet, 1, iRow) &amp; &quot; AT &quot; &amp; sAddr &amp; &quot; : BOOL;  (* IN signal for &quot; &amp; sName &amp; &quot; *)&quot; &amp; NL()
+            End If
+
+            iRow = iRow + 1
+        Loop
+    End If
+
+    &apos; Physical output image (qx-prefixed vars for outputs with an address)
+    oSheet = oDoc.Sheets.getByName(&quot;Outputs&quot;)
+    sBlock = &quot;&quot;
+    iAutoIdx = 0
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        sDescription = GetCellValue(oSheet, 2, iRow)  &apos; Column C
+        sAddr = GetCellValue(oSheet, 3, iRow)         &apos; Column D
+        If Len(sAddr) = 0 And bAuto And Not IsTimerInSignal(oDoc, sName) Then
+            sAddr = AutoAddress(&quot;%QX&quot;, iAutoIdx)
+        End If
+
+        If Len(sAddr) &gt; 0 Then
+            sBlock = sBlock &amp; &quot;    qx&quot; &amp; sName &amp; &quot; AT &quot; &amp; sAddr &amp; &quot; : BOOL;&quot;
+            If Len(sDescription) &gt; 0 Then
+                sBlock = sBlock &amp; &quot;  (* &quot; &amp; sDescription &amp; &quot; *)&quot;
+            End If
+            sBlock = sBlock &amp; NL()
+            iAutoIdx = iAutoIdx + 1
+        End If
+
+        iRow = iRow + 1
+    Loop
+    If Len(sBlock) &gt; 0 Then
+        sCode = sCode &amp; NL() &amp; sBlock
+    End If
+
+    &apos; FB instance and timer instances
+    sCode = sCode &amp; NL()
+    sCode = sCode &amp; &quot;    &quot; &amp; GetInstanceName(oDoc) &amp; &quot; : &quot; &amp; GetConfigValue(oDoc, &quot;Program Name&quot;) &amp; &quot;;&quot; &amp; NL()
+
+    If oDoc.Sheets.hasByName(&quot;Timers&quot;) Then
+        oSheet = oDoc.Sheets.getByName(&quot;Timers&quot;)
+        iRow = 1
+        Do While True
+            sName = GetCellValue(oSheet, 0, iRow)  &apos; Column A
+            If Len(sName) = 0 Then Exit Do
+
+            sComment = GetCellValue(oSheet, 4, iRow)  &apos; Column E
+            sCode = sCode &amp; &quot;    &quot; &amp; sName &amp; &quot; : TON;&quot;
+            If Len(sComment) &gt; 0 Then
+                sCode = sCode &amp; &quot;  (* &quot; &amp; sComment &amp; &quot; *)&quot;
+            End If
+            sCode = sCode &amp; NL()
+
+            iRow = iRow + 1
+        Loop
+    End If
+
+    sCode = sCode &amp; &quot;END_VAR&quot; &amp; NL()
+
+    GenerateProgramVars = sCode
+End Function
+
+Function GenerateTimerCalls(oDoc As Object) As String
+    &apos; Generate the external timer calls; their done flags feed the FB inputs
+    Dim oSheet As Object
+    Dim sCode As String
+    Dim iRow As Integer
+    Dim sTimerName As String
+    Dim sInSignal As String
+    Dim sPreset As String
+
+    If Not HasTimers(oDoc) Then
+        GenerateTimerCalls = &quot;&quot;
+        Exit Function
+    End If
+
+    oSheet = oDoc.Sheets.getByName(&quot;Timers&quot;)
+    sCode = &quot;(* Timers are driven by the step flag outputs of the state machine *)&quot; &amp; NL()
+
+    iRow = 1
+    Do While True
+        sTimerName = GetCellValue(oSheet, 0, iRow)  &apos; Column A
+        If Len(sTimerName) = 0 Then Exit Do
+
+        sInSignal = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        sPreset = GetCellValue(oSheet, 2, iRow)    &apos; Column C
+
+        &apos; FB output names (step flags) are qualified with the instance name
+        If IsOutputName(oDoc, sInSignal) Then
+            sInSignal = GetInstanceName(oDoc) &amp; &quot;.&quot; &amp; sInSignal
+        End If
+
+        sCode = sCode &amp; sTimerName &amp; &quot;(IN := &quot; &amp; sInSignal &amp; &quot;, PT := &quot; &amp; sPreset &amp; &quot;);&quot; &amp; NL()
+
+        iRow = iRow + 1
+    Loop
+
+    sCode = sCode &amp; NL()
+
+    GenerateTimerCalls = sCode
+End Function
+
+Function GenerateFBCall(oDoc As Object) As String
+    &apos; Generate the Function Block call with all inputs mapped; inputs listed as a
+    &apos; timer &apos;Done Input&apos; are wired from the timer&apos;s .Q output
+    Dim oSheet As Object
+    Dim sCode As String
+    Dim iRow As Integer
+    Dim sName As String
+    Dim sTimerName As String
+    Dim bFirst As Boolean
+
+    oSheet = oDoc.Sheets.getByName(&quot;Inputs&quot;)
+    sCode = GetInstanceName(oDoc) &amp; &quot;(&quot;
+    bFirst = True
+
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        If bFirst Then
+            sCode = sCode &amp; NL()
+            bFirst = False
+        Else
+            sCode = sCode &amp; &quot;,&quot; &amp; NL()
+        End If
+
+        sTimerName = FindTimerByDoneInput(oDoc, sName)
+        If Len(sTimerName) &gt; 0 Then
+            sCode = sCode &amp; &quot;    &quot; &amp; sName &amp; &quot; := &quot; &amp; sTimerName &amp; &quot;.Q&quot;
+        Else
+            sCode = sCode &amp; &quot;    &quot; &amp; sName &amp; &quot; := &quot; &amp; sName
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    sCode = sCode &amp; &quot;);&quot; &amp; NL()
+    sCode = sCode &amp; NL()
+
+    GenerateFBCall = sCode
+End Function
+
+Function GenerateOutputRefresh(oDoc As Object) As String
+    &apos; Generate the physical output image refresh for the mapped outputs
+    Dim oSheet As Object
+    Dim sCode As String
+    Dim sBody As String
+    Dim iRow As Integer
+    Dim sName As String
+    Dim sAddr As String
+    Dim bAuto As Boolean
+    Dim bMapped As Boolean
+
+    bAuto = UseAutoAddresses(oDoc)
+    oSheet = oDoc.Sheets.getByName(&quot;Outputs&quot;)
+    sBody = &quot;&quot;
+
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        sAddr = GetCellValue(oSheet, 3, iRow)  &apos; Column D
+        bMapped = (Len(sAddr) &gt; 0)
+        If Not bMapped And bAuto And Not IsTimerInSignal(oDoc, sName) Then
+            bMapped = True
+        End If
+
+        If bMapped Then
+            sBody = sBody &amp; &quot;qx&quot; &amp; sName &amp; &quot; := &quot; &amp; GetInstanceName(oDoc) &amp; &quot;.&quot; &amp; sName &amp; &quot;;&quot; &amp; NL()
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    If Len(sBody) = 0 Then
+        GenerateOutputRefresh = &quot;&quot;
+        Exit Function
+    End If
+
+    sCode = &quot;(* Refresh the physical output image *)&quot; &amp; NL()
+    sCode = sCode &amp; sBody
+    sCode = sCode &amp; NL()
+
+    GenerateOutputRefresh = sCode
+End Function
+
 &apos; ================= Validation =================
 
 Sub ValidateStateMachine(oDoc As Object, ByRef sErrors As String, ByRef sWarnings As String)
@@ -737,6 +1207,7 @@ Sub ValidateStateMachine(oDoc As Object, ByRef sErrors As String, ByRef sWarning
     Dim nStates As Integer
     Dim aIO(999) As String
     Dim nIO As Integer
+    Dim nInputs As Integer
     Dim aOutputs(499) As String
     Dim nOutputs As Integer
     Dim i As Integer
@@ -772,12 +1243,16 @@ Sub ValidateStateMachine(oDoc As Object, ByRef sErrors As String, ByRef sWarning
     Dim sInitState As String
     Dim sEnumType As String
     Dim sStateOut As String
+    Dim sPrgName As String
+    Dim sInstName As String
 
     sProgName = GetConfigValue(oDoc, &quot;Program Name&quot;)
     sStateVar = GetConfigValue(oDoc, &quot;State Variable Name&quot;)
     sInitState = GetConfigValue(oDoc, &quot;Initial State&quot;)
     sEnumType = GetConfigValue(oDoc, &quot;State Enum Type Name&quot;)
     sStateOut = GetConfigValue(oDoc, &quot;State Output Variable&quot;)
+    sPrgName = GetConfigValue(oDoc, &quot;PRG Name&quot;)
+    sInstName = GetConfigValue(oDoc, &quot;FB Instance Name&quot;)
 
     If Len(sProgName) = 0 Then
         Call AddMsg(sErrors, &quot;Config: &apos;Program Name&apos; is empty&quot;)
@@ -797,6 +1272,14 @@ Sub ValidateStateMachine(oDoc As Object, ByRef sErrors As String, ByRef sWarning
 
     If Len(sStateOut) &gt; 0 And Not IsValidIdentifier(sStateOut) Then
         Call AddMsg(sErrors, &quot;Config: State Output Variable &apos;&quot; &amp; sStateOut &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+    End If
+
+    If Len(sPrgName) &gt; 0 And Not IsValidIdentifier(sPrgName) Then
+        Call AddMsg(sErrors, &quot;Config: PRG Name &apos;&quot; &amp; sPrgName &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+    End If
+
+    If Len(sInstName) &gt; 0 And Not IsValidIdentifier(sInstName) Then
+        Call AddMsg(sErrors, &quot;Config: FB Instance Name &apos;&quot; &amp; sInstName &amp; &quot;&apos; is not a valid IEC identifier&quot;)
     End If
 
     &apos; --- States ---
@@ -849,6 +1332,7 @@ Sub ValidateStateMachine(oDoc As Object, ByRef sErrors As String, ByRef sWarning
 
         iRow = iRow + 1
     Loop
+    nInputs = nIO
 
     oSheet = oDoc.Sheets.getByName(&quot;Outputs&quot;)
     iRow = 1
@@ -875,6 +1359,9 @@ Sub ValidateStateMachine(oDoc As Object, ByRef sErrors As String, ByRef sWarning
     End If
     If Len(sStateOut) &gt; 0 And InList(aIO, nIO, sStateOut) Then
         Call AddMsg(sErrors, &quot;Config: State Output Variable &apos;&quot; &amp; sStateOut &amp; &quot;&apos; collides with an input/output name&quot;)
+    End If
+    If InList(aIO, nIO, GetInstanceName(oDoc)) Then
+        Call AddMsg(sErrors, &quot;Config: FB Instance Name &apos;&quot; &amp; GetInstanceName(oDoc) &amp; &quot;&apos; collides with an input/output name&quot;)
     End If
 
     &apos; --- Transitions ---
@@ -944,6 +1431,162 @@ Sub ValidateStateMachine(oDoc As Object, ByRef sErrors As String, ByRef sWarning
 
         iRow = iRow + 1
     Loop
+
+    &apos; --- Timers (optional sheet, used by the wrapper PROGRAM) ---
+    Dim aTimers(199) As String
+    Dim nTimers As Integer
+    Dim aDone(199) As String
+    Dim nDone As Integer
+    Dim sTimerName As String
+    Dim sInSignal As String
+    Dim sPreset As String
+    Dim sDone As String
+    Dim sInAddr As String
+    Dim aInDecl(199) As String
+    Dim nInDecl As Integer
+
+    nTimers = 0
+    nDone = 0
+    nInDecl = 0
+    If oDoc.Sheets.hasByName(&quot;Timers&quot;) Then
+        oSheet = oDoc.Sheets.getByName(&quot;Timers&quot;)
+        iRow = 1
+        Do While True
+            sTimerName = GetCellValue(oSheet, 0, iRow)  &apos; Column A
+            If Len(sTimerName) = 0 Then Exit Do
+
+            sInSignal = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+            sPreset = GetCellValue(oSheet, 2, iRow)    &apos; Column C
+            sDone = GetCellValue(oSheet, 3, iRow)      &apos; Column D
+            sInAddr = GetCellValue(oSheet, 5, iRow)    &apos; Column F
+
+            If Not IsValidIdentifier(sTimerName) Then
+                Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot;: Timer Name &apos;&quot; &amp; sTimerName &amp; &quot;&apos; is not a valid IEC identifier&quot;)
+            End If
+            If InList(aTimers, nTimers, sTimerName) Then
+                Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot;: duplicate timer &apos;&quot; &amp; sTimerName &amp; &quot;&apos;&quot;)
+            End If
+            If InList(aIO, nIO, sTimerName) Then
+                Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot;: Timer Name &apos;&quot; &amp; sTimerName &amp; &quot;&apos; collides with an input/output name&quot;)
+            End If
+            aTimers(nTimers) = sTimerName
+            nTimers = nTimers + 1
+
+            If Len(sPreset) = 0 Then
+                Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): Preset Time is empty&quot;)
+            ElseIf UCase(Left(sPreset, 2)) &lt;&gt; &quot;T#&quot; Then
+                Call AddMsg(sWarnings, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): Preset Time &apos;&quot; &amp; sPreset &amp; &quot;&apos; does not look like a time literal (e.g. T#2S)&quot;)
+            End If
+
+            If Len(sDone) = 0 Then
+                Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): Done Input is empty&quot;)
+            Else
+                If Not InList(aIO, nInputs, sDone) Then
+                    Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): Done Input &apos;&quot; &amp; sDone &amp; &quot;&apos; is not defined in the Inputs sheet&quot;)
+                End If
+                If InList(aDone, nDone, sDone) Then
+                    Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot;: input &apos;&quot; &amp; sDone &amp; &quot;&apos; is driven by more than one timer&quot;)
+                End If
+                aDone(nDone) = sDone
+                nDone = nDone + 1
+            End If
+
+            If Len(sInSignal) = 0 Then
+                Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): IN Signal is empty&quot;)
+            ElseIf InList(aIO, nIO, sInSignal) Then
+                If Len(sInAddr) &gt; 0 Then
+                    Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): IN Signal &apos;&quot; &amp; sInSignal &amp; &quot;&apos; is already a declared input/output; remove the IN Signal Address&quot;)
+                End If
+            ElseIf Len(sInAddr) &gt; 0 Then
+                If Not IsValidIdentifier(sInSignal) Then
+                    Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): IN Signal Address requires a plain variable name as IN Signal, not an expression&quot;)
+                ElseIf InList(aInDecl, nInDecl, sInSignal) Then
+                    Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): IN Signal &apos;&quot; &amp; sInSignal &amp; &quot;&apos; is declared by more than one timer row&quot;)
+                Else
+                    aInDecl(nInDecl) = sInSignal
+                    nInDecl = nInDecl + 1
+                End If
+            Else
+                Call AddMsg(sWarnings, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sTimerName &amp; &quot;&apos;): IN Signal &apos;&quot; &amp; sInSignal &amp; &quot;&apos; is not a declared input/output; it is passed through as-is&quot;)
+            End If
+
+            iRow = iRow + 1
+        Loop
+    End If
+
+    &apos; --- Physical addresses (optional column D on Inputs/Outputs) ---
+    Dim aAddr(999) As String
+    Dim nAddr As Integer
+    Dim sAddr As String
+
+    nAddr = 0
+    oSheet = oDoc.Sheets.getByName(&quot;Inputs&quot;)
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        sAddr = GetCellValue(oSheet, 3, iRow)  &apos; Column D
+        If Len(sAddr) &gt; 0 Then
+            If UCase(Left(sAddr, 2)) &lt;&gt; &quot;%I&quot; Then
+                Call AddMsg(sWarnings, &quot;Inputs row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sName &amp; &quot;&apos;): Physical Address &apos;&quot; &amp; sAddr &amp; &quot;&apos; does not start with %I&quot;)
+            End If
+            If InList(aAddr, nAddr, sAddr) Then
+                Call AddMsg(sErrors, &quot;Inputs row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sName &amp; &quot;&apos;): duplicate Physical Address &apos;&quot; &amp; sAddr &amp; &quot;&apos;&quot;)
+            End If
+            aAddr(nAddr) = sAddr
+            nAddr = nAddr + 1
+            If Len(FindTimerByDoneInput(oDoc, sName)) &gt; 0 Then
+                Call AddMsg(sWarnings, &quot;Inputs row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sName &amp; &quot;&apos;): this input is driven by a timer, so its Physical Address is ignored&quot;)
+            End If
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    oSheet = oDoc.Sheets.getByName(&quot;Outputs&quot;)
+    iRow = 1
+    Do While True
+        sName = GetCellValue(oSheet, 1, iRow)  &apos; Column B
+        If Len(sName) = 0 Then Exit Do
+
+        sAddr = GetCellValue(oSheet, 3, iRow)  &apos; Column D
+        If Len(sAddr) &gt; 0 Then
+            If UCase(Left(sAddr, 2)) &lt;&gt; &quot;%Q&quot; Then
+                Call AddMsg(sWarnings, &quot;Outputs row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sName &amp; &quot;&apos;): Physical Address &apos;&quot; &amp; sAddr &amp; &quot;&apos; does not start with %Q&quot;)
+            End If
+            If InList(aAddr, nAddr, sAddr) Then
+                Call AddMsg(sErrors, &quot;Outputs row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sName &amp; &quot;&apos;): duplicate Physical Address &apos;&quot; &amp; sAddr &amp; &quot;&apos;&quot;)
+            End If
+            aAddr(nAddr) = sAddr
+            nAddr = nAddr + 1
+        End If
+
+        iRow = iRow + 1
+    Loop
+
+    If oDoc.Sheets.hasByName(&quot;Timers&quot;) Then
+        oSheet = oDoc.Sheets.getByName(&quot;Timers&quot;)
+        iRow = 1
+        Do While True
+            sName = GetCellValue(oSheet, 0, iRow)  &apos; Column A
+            If Len(sName) = 0 Then Exit Do
+
+            sAddr = GetCellValue(oSheet, 5, iRow)  &apos; Column F
+            If Len(sAddr) &gt; 0 Then
+                If UCase(Left(sAddr, 2)) &lt;&gt; &quot;%I&quot; Then
+                    Call AddMsg(sWarnings, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sName &amp; &quot;&apos;): IN Signal Address &apos;&quot; &amp; sAddr &amp; &quot;&apos; does not start with %I&quot;)
+                End If
+                If InList(aAddr, nAddr, sAddr) Then
+                    Call AddMsg(sErrors, &quot;Timers row &quot; &amp; (iRow + 1) &amp; &quot; (&apos;&quot; &amp; sName &amp; &quot;&apos;): duplicate Physical Address &apos;&quot; &amp; sAddr &amp; &quot;&apos;&quot;)
+                End If
+                aAddr(nAddr) = sAddr
+                nAddr = nAddr + 1
+            End If
+
+            iRow = iRow + 1
+        Loop
+    End If
 
     &apos; --- Unreachable states ---
     For i = 0 To nStates - 1
@@ -1108,10 +1751,25 @@ Sub WriteStringToUrl(sUrl As String, sText As String)
     oOutputStream.closeOutput()
 End Sub
 
-Sub ExportToFile(sCode As String, oDoc As Object)
-    &apos; Export generated code to a file chosen by the user
+Function ParentFolderUrl(sUrl As String) As String
+    &apos; Folder part of a file URL (everything before the last &apos;/&apos;)
+    Dim i As Integer
+
+    For i = Len(sUrl) To 1 Step -1
+        If Mid(sUrl, i, 1) = &quot;/&quot; Then
+            ParentFolderUrl = Left(sUrl, i - 1)
+            Exit Function
+        End If
+    Next i
+    ParentFolderUrl = sUrl
+End Function
+
+Sub ExportBoth(sFbCode As String, sPrgCode As String, oDoc As Object)
+    &apos; Export the Function Block to a file chosen by the user, then write the
+    &apos; wrapper PROGRAM as &lt;PRG Name&gt;.st into the same folder
     Dim sFileName As String
     Dim sFilePath As String
+    Dim sPrgPath As String
     Dim oFilePicker As Object
 
     sFileName = GetConfigValue(oDoc, &quot;Program Name&quot;) &amp; &quot;.st&quot;
@@ -1126,22 +1784,24 @@ Sub ExportToFile(sCode As String, oDoc As Object)
 
     If oFilePicker.Execute() = com.sun.star.ui.dialogs.ExecutableDialogResults.OK Then
         sFilePath = oFilePicker.Files(0)
+        sPrgPath = ParentFolderUrl(sFilePath) &amp; &quot;/&quot; &amp; GetPrgName(oDoc) &amp; &quot;.st&quot;
 
         On Error GoTo ErrorHandler
-        WriteStringToUrl(sFilePath, sCode)
+        WriteStringToUrl(sFilePath, sFbCode)
+        WriteStringToUrl(sPrgPath, sPrgCode)
 
         MsgBox &quot;State machine code generated successfully!&quot; &amp; Chr(10) &amp; Chr(10) &amp; _
-               &quot;File: &quot; &amp; ConvertFromUrl(sFilePath), 64, &quot;Success&quot;
+               &quot;Function Block: &quot; &amp; ConvertFromUrl(sFilePath) &amp; Chr(10) &amp; _
+               &quot;Wrapper PROGRAM: &quot; &amp; ConvertFromUrl(sPrgPath), 64, &quot;Success&quot;
         Exit Sub
 
 ErrorHandler:
         MsgBox &quot;Error writing file: &quot; &amp; Error$ &amp; Chr(10) &amp; Chr(10) &amp; _
-               &quot;Path: &quot; &amp; sFilePath, 16, &quot;Error&quot;
+               &quot;Paths: &quot; &amp; sFilePath &amp; Chr(10) &amp; sPrgPath, 16, &quot;Error&quot;
     End If
 End Sub
 
-
-      </ooo:source-code>
+</ooo:source-code>
      </ooo:module>
     </ooo:library-embedded>
    </ooo:libraries>
@@ -1398,8 +2058,25 @@ End Sub
       <text:p>stateNum</text:p>
      </table:table-cell>
     </table:table-row>
+       <table:table-row table:style-name="ro1">
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>PRG Name</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>PRG_CrimpDevice</text:p>
+     </table:table-cell>
+    </table:table-row>
+    <table:table-row table:style-name="ro1">
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>FB Instance Name</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>G_CrimpDevice</text:p>
+     </table:table-cell>
+    </table:table-row>
    </table:table>
    <table:table table:name="Inputs" table:style-name="ta1">
+    <table:table-column table:style-name="co1" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co1" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co1" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co1" table:default-cell-style-name="Default"/>
@@ -1413,6 +2090,9 @@ End Sub
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Description</text:p>
      </table:table-cell>
+         <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Physical Address</text:p>
+     </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1424,6 +2104,9 @@ End Sub
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Start button (I0.0)</text:p>
      </table:table-cell>
+         <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>%IX0.0</text:p>
+     </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1434,6 +2117,9 @@ End Sub
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Unload confirmation button (I0.1)</text:p>
+     </table:table-cell>
+         <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>%IX0.1</text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1463,6 +2149,7 @@ End Sub
     <table:table-column table:style-name="co1" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co1" table:default-cell-style-name="Default"/>
     <table:table-column table:style-name="co1" table:default-cell-style-name="Default"/>
+    <table:table-column table:style-name="co1" table:default-cell-style-name="Default"/>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Output #</text:p>
@@ -1472,6 +2159,9 @@ End Sub
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Description</text:p>
+     </table:table-cell>
+         <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Physical Address</text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1484,6 +2174,9 @@ End Sub
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Crimp actuator (Q0.0)</text:p>
      </table:table-cell>
+         <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>%QX0.0</text:p>
+     </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="ro1">
      <table:table-cell office:value-type="string" calcext:value-type="string">
@@ -1494,6 +2187,9 @@ End Sub
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>Unload actuator (Q0.1)</text:p>
+     </table:table-cell>
+         <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>%QX0.1</text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="ro1">
@@ -1876,6 +2572,63 @@ End Sub
      </table:table-cell>
      <table:table-cell office:value-type="string" calcext:value-type="string">
       <text:p>1</text:p>
+     </table:table-cell>
+    </table:table-row>
+   </table:table>
+      <table:table table:name="Timers" table:style-name="ta1">
+    <table:table-column table:style-name="co2" table:number-columns-repeated="6" table:default-cell-style-name="Default"/>
+    <table:table-row table:style-name="ro1">
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Timer Name</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>IN Signal</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Preset Time</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Done Input</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Comment</text:p>
+     </table:table-cell>
+         <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>IN Signal Address</text:p>
+     </table:table-cell>
+    </table:table-row>
+    <table:table-row table:style-name="ro1">
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>tX2</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>X2</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>T#2S</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>T1CrimpDone</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Crimp time</text:p>
+     </table:table-cell>
+    </table:table-row>
+    <table:table-row table:style-name="ro1">
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>tX3</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>X3</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>T#5S</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>T2PauseDone</text:p>
+     </table:table-cell>
+     <table:table-cell office:value-type="string" calcext:value-type="string">
+      <text:p>Pause time</text:p>
      </table:table-cell>
     </table:table-row>
    </table:table>

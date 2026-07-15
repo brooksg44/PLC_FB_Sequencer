@@ -4,3 +4,12 @@
 examples/*_StateMachine.fods
 examples/PRG_*.st
 examples/FB_*Seq.st
+examples/IntroSFC.*
+examples/PLC_FB_Sequencer*
+
+# CODESYS build output and IDE state (regenerated on build/open)
+*.bootinfo
+*.bootinfo_guids
+*.compileinfo
+*.precompilecache
+*.opt
